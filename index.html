@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CÓMPUTO MÉTRICO · Vision AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a; --surface: #141414; --surface2: #1c1c1c;
+  --border: #272727; --border2: #333;
+  --lime: #d4f54e; --lime-dim: #a8c43d; --lime-glow: rgba(212,245,78,0.08);
+  --text: #e4e4e4; --muted: #555; --muted2: #777; --danger: #ff4e4e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; min-height: 100vh; }
+
+header {
+  padding: 16px 32px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--bg); z-index: 50;
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--lime); }
+.logo span { color: var(--muted); font-weight: 400; font-size: 12px; font-family: 'DM Mono', monospace; margin-left: 6px; }
+.ai-badge { font-size: 10px; color: var(--lime); background: var(--lime-glow); border: 1px solid rgba(212,245,78,0.2); border-radius: 2px; padding: 3px 10px; letter-spacing: 0.12em; }
+
+.app { display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 53px); }
+
+.sidebar { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
+.sec { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.sec-title { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+
+.field { margin-bottom: 10px; }
+.lbl { font-size: 10px; color: var(--muted2); display: block; margin-bottom: 4px; letter-spacing: 0.04em; }
+
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px;
+  padding: 8px 11px; border-radius: 4px; outline: none; transition: border-color 0.15s; appearance: none;
+}
+input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus { border-color: var(--lime); }
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+textarea { resize: none; font-size: 11px; line-height: 1.6; color: var(--muted2); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+
+.tog-row { display: flex; gap: 6px; }
+.tog { background: var(--surface); border: 1px solid var(--border); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 5px 12px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
+.tog.on { background: var(--lime); border-color: var(--lime); color: #000; font-weight: 500; }
+
+.chk-item { display: flex; align-items: center; gap: 8px; font-size: 11px; cursor: pointer; margin-bottom: 6px; color: var(--text); }
+.chk-item input { accent-color: var(--lime); width: 13px; height: 13px; }
+
+.upload-zone { border: 1px dashed var(--border2); border-radius: 5px; padding: 22px 14px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; background: var(--surface); }
+.upload-zone:hover { border-color: var(--lime); background: var(--lime-glow); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.upload-text { font-size: 11px; color: var(--muted2); line-height: 1.7; }
+.upload-text strong { color: var(--lime); font-size: 12px; }
+
+.preview-img { width: 100%; border-radius: 4px; border: 1px solid var(--border); display: block; max-height: 180px; object-fit: cover; }
+.preview-remove { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.75); border: none; color: var(--text); border-radius: 3px; padding: 2px 8px; cursor: pointer; font-size: 12px; }
+
+.muro-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 9px 12px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+.muro-name { font-size: 12px; font-weight: 500; color: var(--lime); margin-bottom: 2px; }
+.muro-info { font-size: 10px; color: var(--muted2); line-height: 1.6; }
+.muro-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 3px; transition: color 0.1s; }
+.muro-del:hover { color: var(--danger); }
+
+.btn-primary { width: 100%; background: var(--lime); border: none; color: #000; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; padding: 12px; border-radius: 4px; cursor: pointer; transition: background 0.12s; }
+.btn-primary:hover { background: var(--lime-dim); }
+.btn-primary:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; border: 1px solid var(--border); }
+.btn-outline { width: 100%; background: transparent; border: 1px dashed var(--border2); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 9px; border-radius: 4px; cursor: pointer; transition: all 0.15s; margin-top: 6px; letter-spacing: 0.08em; }
+.btn-outline:hover { border-color: var(--lime); color: var(--lime); }
+.btn-calc { width: 100%; background: transparent; border: 1px solid var(--lime); color: var(--lime); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; padding: 11px; border-radius: 4px; cursor: pointer; transition: all 0.12s; margin-top: 6px; }
+.btn-calc:hover { background: var(--lime-glow); }
+.btn-sm { background: var(--surface2); border: 1px solid var(--border); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 6px 14px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
+.btn-sm:hover { border-color: var(--lime); color: var(--lime); }
+
+.main { display: flex; flex-direction: column; overflow: hidden; }
+.ai-panel { padding: 18px 24px; border-bottom: 1px solid var(--border); }
+.ai-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ai-title { font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: 'Syne', sans-serif; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+.dot.pulse { background: var(--lime); animation: dotpulse 1.5s infinite; }
+.dot.done { background: var(--lime); }
+@keyframes dotpulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.ai-status-txt { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
+
+.state-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; gap: 8px; text-align: center; }
+.state-empty-txt { font-size: 11px; color: var(--muted2); line-height: 1.7; }
+.spinner-wrap { display: flex; flex-direction: column; align-items: center; padding: 28px; gap: 12px; }
+.spinner { width: 22px; height: 22px; border: 2px solid var(--border2); border-top-color: var(--lime); border-radius: 50%; animation: spin 0.75s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-msg { font-size: 11px; color: var(--muted2); font-style: italic; }
+
+.ai-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px; cursor: pointer; transition: border-color 0.15s; }
+.ai-card.sel { border-color: var(--lime); background: var(--lime-glow); }
+.ai-card-top { display: flex; align-items: start; justify-content: space-between; margin-bottom: 8px; }
+.ai-card-name { font-size: 11px; font-weight: 500; color: var(--lime); line-height: 1.4; }
+.ai-card-chk { accent-color: var(--lime); width: 13px; height: 13px; flex-shrink: 0; margin-left: 6px; }
+.ai-card-field { margin-bottom: 5px; }
+.ai-card-field label { font-size: 9px; color: var(--muted); display: block; margin-bottom: 2px; letter-spacing: 0.06em; }
+.ai-card-field input { width: 100%; font-size: 12px; padding: 5px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; color: var(--text); font-family: 'DM Mono', monospace; outline: none; }
+.ai-card-field input:focus { border-color: var(--lime); }
+.ai-note { font-size: 10px; color: var(--muted); margin-top: 5px; line-height: 1.5; font-style: italic; }
+.ai-obs { grid-column: 1/-1; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; font-size: 10px; color: var(--muted2); line-height: 1.7; }
+.import-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.btn-import { background: var(--lime); border: none; color: #000; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 7px 16px; border-radius: 3px; cursor: pointer; transition: background 0.12s; }
+.btn-import:hover { background: var(--lime-dim); }
+.btn-import-all { background: transparent; border: 1px solid var(--border2); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 7px 16px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
+.btn-import-all:hover { border-color: var(--lime); color: var(--lime); }
+
+.results-panel { flex: 1; padding: 18px 24px; overflow-y: auto; }
+.res-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.res-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 22px; }
+.chip { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 11px 13px; }
+.chip-lbl { font-size: 9px; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
+.chip-val { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--lime); line-height: 1; }
+.chip-unit { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.res-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 24px; }
+.res-table th { text-align: left; font-size: 9px; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--border); font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+.res-table td { padding: 9px 10px; border-bottom: 1px solid #131313; }
+.res-table tr:hover td { background: var(--surface); }
+.res-table tr.cat-row td { background: var(--surface2); font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; }
+.td-name { color: var(--text); font-size: 12px; }
+.td-qty { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--lime); }
+.td-unit { color: var(--muted); font-size: 10px; }
+.td-note { color: var(--muted); font-size: 10px; line-height: 1.5; }
+.empty-res { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; gap: 8px; color: var(--muted); font-size: 11px; text-align: center; }
+.error-box { background: rgba(255,78,78,0.07); border: 1px solid rgba(255,78,78,0.25); border-radius: 4px; padding: 12px 14px; font-size: 11px; color: #ff8080; line-height: 1.7; }
+
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; padding: 24px; width: 380px; max-width: 94vw; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--lime); margin-bottom: 16px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.m-ok { flex:1; background: var(--lime); border: none; color: #000; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; padding: 10px; border-radius: 3px; cursor: pointer; }
+.m-cancel { flex:1; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 12px; padding: 10px; border-radius: 3px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CÓMPUTO<span>.métrico</span></div>
+  <div class="ai-badge">VISION AI</div>
+</header>
+
+<div class="app">
+  <div class="sidebar">
+
+    <div class="sec">
+      <div class="sec-title">Proyecto</div>
+      <div class="field">
+        <label class="lbl">Nombre</label>
+        <input type="text" id="proyNombre" placeholder="Ej: Dpto 4B — Reforma 2026">
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">Plano AutoCAD</div>
+      <div id="uploadZone" class="upload-zone">
+        <input type="file" id="fileInput" accept="image/*">
+        <div class="upload-text"><strong>Clic o arrastrá</strong><br>Captura AutoCAD con cotas<br><span style="font-size:10px;color:var(--muted);">PNG · JPG · WEBP</span></div>
+      </div>
+      <div id="previewWrap" style="display:none; margin-top:8px; position:relative;">
+        <img id="previewImg" class="preview-img" src="" alt="">
+        <button class="preview-remove" onclick="removeImg()">✕</button>
+      </div>
+      <div class="field" style="margin-top:10px;">
+        <label class="lbl">Contexto para la IA (opcional)</label>
+        <textarea id="aiCtx" rows="2" placeholder="Ej: Altura de muros 2.60m. Ignorar exteriores."></textarea>
+      </div>
+      <button class="btn-primary" id="btnAnalyze" onclick="analizarPlano()" disabled>⬡ Analizar con Vision AI</button>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">Configuración</div>
+      <div class="field">
+        <label class="lbl">Sistema</label>
+        <div class="tog-row" id="togSist">
+          <button class="tog on" data-v="simple">Simple cara</button>
+          <button class="tog" data-v="doble">Doble cara</button>
+        </div>
+      </div>
+      <div class="row2 field">
+        <div><label class="lbl">Sep. montantes</label>
+          <select id="sepM"><option value="0.4">400 mm</option><option value="0.6" selected>600 mm</option></select>
+        </div>
+        <div><label class="lbl">Alto placa (m)</label><input type="number" id="pAlto" value="2.6" step="0.1"></div>
+      </div>
+      <div class="field">
+        <label class="lbl">Incluir en cómputo</label>
+        <label class="chk-item"><input type="checkbox" id="chkMont" checked> Montantes C + Soleras U</label>
+        <label class="chk-item"><input type="checkbox" id="chkPlac" checked> Placas de yeso (1.2×2.6m)</label>
+        <label class="chk-item"><input type="checkbox" id="chkTorn" checked> Tornillos</label>
+        <label class="chk-item"><input type="checkbox" id="chkCint" checked> Cinta + Masilla</label>
+        <label class="chk-item"><input type="checkbox" id="chkLana" checked> Lana de vidrio 50mm</label>
+      </div>
+    </div>
+
+    <div class="sec" style="flex:1;">
+      <div class="sec-title">Muros cargados</div>
+      <div id="muroList"><p style="font-size:11px;color:var(--muted);">Sin muros. Analizá un plano o agregá manualmente.</p></div>
+      <button class="btn-outline" onclick="openModal()">+ AGREGAR MURO MANUAL</button>
+    </div>
+
+    <div style="padding:14px 20px; border-top:1px solid var(--border);">
+      <button class="btn-calc" onclick="calcular()">▶ CALCULAR CÓMPUTO</button>
+    </div>
+
+  </div>
+
+  <div class="main">
+    <div class="ai-panel">
+      <div class="ai-header">
+        <div class="ai-title"><div class="dot" id="statusDot"></div>Lectura de plano</div>
+        <div class="ai-status-txt" id="aiStatusTxt">ESPERANDO IMAGEN</div>
+      </div>
+      <div id="aiContent">
+        <div class="state-empty">
+          <div class="state-empty-txt">Subí una captura de AutoCAD con cotas visibles.<br>La IA identificará los muros y sus dimensiones automáticamente.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="res-header">
+        <div class="res-title">Cómputo</div>
+        <button class="btn-sm" onclick="exportCSV()">↓ Exportar CSV</button>
+      </div>
+      <div id="resultsArea">
+        <div class="empty-res"><div>Cargá muros y presioná "Calcular cómputo".</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-title">+ Muro manual</div>
+    <div class="field"><label class="lbl">Nombre / referencia</label><input type="text" id="mNom" placeholder="Ej: Tabique sala-comedor"></div>
+    <div class="row2 field">
+      <div><label class="lbl">Longitud (m)</label><input type="number" id="mLong" step="0.1" placeholder="0.00"></div>
+      <div><label class="lbl">Altura (m)</label><input type="number" id="mAlt" value="2.60" step="0.05"></div>
+    </div>
+    <div class="field"><label class="lbl">Aberturas</label>
+      <div class="row3">
+        <div><label class="lbl">Cant.</label><input type="number" id="mAbN" value="0" min="0"></div>
+        <div><label class="lbl">Ancho (m)</label><input type="number" id="mAbW" value="0.90" step="0.05"></div>
+        <div><label class="lbl">Alto (m)</label><input type="number" id="mAbH" value="2.05" step="0.05"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="m-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="m-ok" onclick="addMuroManual()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let muros = [], sistemaVal = 'simple', imgBase64 = null, imgMediaType = 'image/jpeg';
+let aiDetected = [], resultados = [], loadingInterval = null;
+
+// ── TOGGLES ──
+document.querySelectorAll('#togSist .tog').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#togSist .tog').forEach(x => x.classList.remove('on'));
+    b.classList.add('on'); sistemaVal = b.dataset.v;
+  });
+});
+
+// ── FILE UPLOAD ──
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--lime)'; });
+uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+function handleFile(f) {
+  imgMediaType = f.type || 'image/jpeg';
+  const r = new FileReader();
+  r.onload = e => {
+    imgBase64 = e.target.result.split(',')[1];
+    document.getElementById('previewImg').src = e.target.result;
+    document.getElementById('previewWrap').style.display = 'block';
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('btnAnalyze').disabled = false;
+  };
+  r.readAsDataURL(f);
+}
+
+function removeImg() {
+  imgBase64 = null;
+  document.getElementById('previewWrap').style.display = 'none';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('btnAnalyze').disabled = true;
+  fileInput.value = ''; setAIState('idle');
+}
+
+// ── AI STATE ──
+function setAIState(s) {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('aiStatusTxt');
+  dot.className = 'dot' + (s==='loading'?' pulse':s==='done'?' done':'');
+  txt.textContent = {idle:'ESPERANDO IMAGEN',loading:'ANALIZANDO…',done:'LECTURA COMPLETA',error:'ERROR'}[s]||'';
+  txt.style.color = s==='done'?'var(--lime)':s==='error'?'var(--danger)':'var(--muted)';
+}
+
+// ── ANALYZE ──
+async function analizarPlano() {
+  if (!imgBase64) return;
+  setAIState('loading');
+  const phrases = ['Analizando plano…','Identificando muros…','Leyendo cotas…','Procesando aberturas…'];
+  let pi = 0;
+  const cont = document.getElementById('aiContent');
+  cont.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><div class="spinner-msg" id="loadMsg">${phrases[0]}</div></div>`;
+  loadingInterval = setInterval(() => { pi=(pi+1)%phrases.length; const el=document.getElementById('loadMsg'); if(el) el.textContent=phrases[pi]; }, 1800);
+
+  const ctx = document.getElementById('aiCtx').value.trim();
+  const systemPrompt = `Sos un experto en cómputo métrico de tabiquería seca de cartón yeso (Durlock/Knauf). Analizás planos de AutoCAD con cotas numéricas visibles.
+
+Identificá todos los muros o tabiques interiores y extraé sus dimensiones exactas de las cotas del plano.
+
+Respondé ÚNICAMENTE con JSON válido. Sin texto adicional. Sin markdown. Sin backticks:
+
+{"muros":[{"nombre":"string descriptivo","longitud_m":number,"altura_m":number,"aberturas":[{"tipo":"puerta o ventana","ancho_m":number,"alto_m":number}],"nota":"ubicación breve"}],"observaciones":"notas generales"}
+
+Reglas:
+- Si no ves la altura en el plano, usá 2.60m por defecto
+- Si no hay aberturas, devolvé "aberturas":[]
+- Nombres descriptivos (ej: "Tabique dormitorio principal")
+- Solo muros interiores de tabiquería seca, no estructurales ni exteriores
+- Usá los valores EXACTOS de las cotas visibles. Si están en cm, convertí a metros${ctx?`\n- Contexto del usuario: ${ctx}`:''}`;
+
+  try {
+    const res = await fetch('/.netlify/functions/proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imgMediaType, data: imgBase64 } },
+            { type: 'text', text: 'Analizá este plano de AutoCAD e identificá todos los muros de tabiquería seca con sus dimensiones exactas.' }
+          ]
+        }]
+      })
+    });
+
+    clearInterval(loadingInterval);
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+    const data = await res.json();
+    const raw = data.content.map(b => b.text||'').join('').replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(raw);
+    aiDetected = parsed.muros || [];
+    renderAICards(parsed);
+    setAIState('done');
+  } catch(err) {
+    clearInterval(loadingInterval);
+    setAIState('error');
+    cont.innerHTML = `<div class="error-box">⚠ ${err.message}</div>`;
+  }
+}
+
+// ── AI CARDS ──
+function renderAICards(parsed) {
+  const cont = document.getElementById('aiContent');
+  if (!parsed.muros || !parsed.muros.length) {
+    cont.innerHTML = `<div class="state-empty"><div class="state-empty-txt">No se detectaron muros. Intentá con una imagen más clara.</div></div>`; return;
+  }
+  let h = `<div class="ai-cards">`;
+  parsed.muros.forEach((m, i) => {
+    const nAb = m.aberturas ? m.aberturas.length : 0;
+    const abW = nAb > 0 ? m.aberturas[0].ancho_m : 0.90;
+    const abH = nAb > 0 ? m.aberturas[0].alto_m : 2.05;
+    h += `<div class="ai-card sel" id="aicard_${i}" onclick="toggleCard(${i})">
+      <div class="ai-card-top"><div class="ai-card-name">${m.nombre}</div>
+      <input type="checkbox" class="ai-card-chk" id="aichk_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('aicard_${i}').classList.toggle('sel',this.checked)"></div>
+      <div class="ai-card-field"><label>LONGITUD (m)</label><input type="number" id="ai_l_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
+      <div class="ai-card-field"><label>ALTURA (m)</label><input type="number" id="ai_a_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
+      <div class="ai-card-field"><label>N° ABERTURAS</label><input type="number" id="ai_n_${i}" value="${nAb}" min="0" onclick="event.stopPropagation()"></div>
+      ${nAb>0?`<div class="row2"><div class="ai-card-field"><label>ANCHO AB.</label><input type="number" id="ai_aw_${i}" value="${abW}" step="0.05" onclick="event.stopPropagation()"></div><div class="ai-card-field"><label>ALTO AB.</label><input type="number" id="ai_ah_${i}" value="${abH}" step="0.05" onclick="event.stopPropagation()"></div></div>`:''}
+      ${m.nota?`<div class="ai-note">↳ ${m.nota}</div>`:''}
+    </div>`;
+  });
+  if (parsed.observaciones) h += `<div class="ai-obs"><strong style="color:var(--lime);font-size:9px;letter-spacing:0.1em;">OBSERVACIONES IA</strong><br>${parsed.observaciones}</div>`;
+  h += `</div><div class="import-row"><button class="btn-import" onclick="importarSeleccionados()">↓ Importar seleccionados</button><button class="btn-import-all" onclick="importarTodos()">↓ Importar todos</button></div>`;
+  cont.innerHTML = h;
+}
+
+function toggleCard(i) { const chk=document.getElementById(`aichk_${i}`); chk.checked=!chk.checked; document.getElementById(`aicard_${i}`).classList.toggle('sel',chk.checked); }
+
+function importarSeleccionados() { aiDetected.forEach((_,i)=>{ const c=document.getElementById(`aichk_${i}`); if(c&&c.checked) importMuro(i); }); renderMuros(); }
+function importarTodos() { aiDetected.forEach((_,i)=>importMuro(i)); renderMuros(); }
+function importMuro(i) {
+  const m=aiDetected[i];
+  const long=parseFloat(document.getElementById(`ai_l_${i}`)?.value??m.longitud_m);
+  const alt=parseFloat(document.getElementById(`ai_a_${i}`)?.value??m.altura_m);
+  const nAb=parseInt(document.getElementById(`ai_n_${i}`)?.value??0);
+  const abW=parseFloat(document.getElementById(`ai_aw_${i}`)?.value??0.9);
+  const abH=parseFloat(document.getElementById(`ai_ah_${i}`)?.value??2.05);
+  if (!muros.find(x=>x.nombre===m.nombre&&x.long===long)) muros.push({nombre:m.nombre,long,altura:alt,nAberturas:nAb,abAncho:abW,abAltura:abH});
+}
+
+// ── MUROS ──
+function renderMuros() {
+  const list=document.getElementById('muroList');
+  if (!muros.length) { list.innerHTML=`<p style="font-size:11px;color:var(--muted);">Sin muros. Analizá un plano o agregá manualmente.</p>`; return; }
+  list.innerHTML=muros.map((m,i)=>{
+    const neta=(m.long*m.altura-m.nAberturas*m.abAncho*m.abAltura).toFixed(2);
+    return `<div class="muro-card"><div><div class="muro-name">${m.nombre}</div><div class="muro-info">${m.long}m × ${m.altura}m · ${neta} m²${m.nAberturas>0?` · ${m.nAberturas} abertura(s)`:''}</div></div><button class="muro-del" onclick="deleteMuro(${i})">✕</button></div>`;
+  }).join('');
+}
+function deleteMuro(i) { muros.splice(i,1); renderMuros(); }
+
+// ── MODAL ──
+function openModal() { document.getElementById('overlay').classList.add('open'); document.getElementById('mNom').focus(); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target===document.getElementById('overlay')) closeModal(); });
+function addMuroManual() {
+  const nombre=document.getElementById('mNom').value.trim()||`Muro ${muros.length+1}`;
+  const long=parseFloat(document.getElementById('mLong').value)||0;
+  const altura=parseFloat(document.getElementById('mAlt').value)||2.6;
+  const nAb=parseInt(document.getElementById('mAbN').value)||0;
+  const abW=parseFloat(document.getElementById('mAbW').value)||0.9;
+  const abH=parseFloat(document.getElementById('mAbH').value)||2.05;
+  if(long<=0){alert('Ingresá una longitud válida.');return;}
+  muros.push({nombre,long,altura,nAberturas:nAb,abAncho:abW,abAltura:abH});
+  renderMuros(); closeModal();
+  document.getElementById('mNom').value=''; document.getElementById('mLong').value=''; document.getElementById('mAbN').value='0';
+}
+
+// ── CALCULAR ──
+function calcular() {
+  if (!muros.length){alert('Agregá al menos un muro.');return;}
+  const caras=sistemaVal==='doble'?2:1, sepM=parseFloat(document.getElementById('sepM').value);
+  const pAlt=parseFloat(document.getElementById('pAlto').value), pAn=1.2;
+  let totLong=0,totBruta=0,totNeta=0;
+  muros.forEach(m=>{totLong+=m.long;const b=m.long*m.altura;totBruta+=b;totNeta+=b-m.nAberturas*m.abAncho*m.abAltura;});
+  const avgAlt=totBruta/totLong;
+  let montC=0; muros.forEach(m=>{montC+=Math.ceil(m.long/sepM)+1+m.nAberturas*2;});
+  const piezasMC=Math.ceil(montC*avgAlt/3), piezasSol=Math.ceil(totLong*2/3);
+  const placas=Math.ceil(totNeta*caras*1.10/(pAn*pAlt));
+  const tornPF=Math.ceil(totNeta*caras*25), tornMS=montC*8;
+  const nFilas=Math.max(1,Math.ceil(avgAlt/pAlt)-1);
+  const cinta=Math.ceil((totLong/pAn*pAlt+totLong*nFilas)*caras*1.05);
+  const pasta=Math.ceil(cinta*0.15), lana=Math.ceil(totNeta*1.05);
+
+  resultados=[];
+  if(document.getElementById('chkMont').checked){resultados.push({cat:'Estructura',nombre:'Montante C',qty:piezasMC,unit:'piezas 3m',nota:`${montC} montantes · sep. ${sepM*100}cm`});resultados.push({cat:'Estructura',nombre:'Solera U',qty:piezasSol,unit:'piezas 3m',nota:`${(totLong*2).toFixed(1)} m lineales`});}
+  if(document.getElementById('chkPlac').checked){resultados.push({cat:'Placas',nombre:'Placa yeso 1.2×2.6m',qty:placas,unit:'placas',nota:`Área neta ${totNeta.toFixed(2)} m² · ${caras} cara(s) + 10%`});}
+  if(document.getElementById('chkTorn').checked){resultados.push({cat:'Fijaciones',nombre:'Tornillo placa-montante',qty:tornPF,unit:'u',nota:'25 u/m² de placa'});resultados.push({cat:'Fijaciones',nombre:'Tornillo montante-solera',qty:tornMS,unit:'u',nota:'4 u/montante/solera × 2'});}
+  if(document.getElementById('chkCint').checked){resultados.push({cat:'Terminación',nombre:'Cinta de juntas',qty:cinta,unit:'m',nota:'Juntas V+H + 5%'});resultados.push({cat:'Terminación',nombre:'Masilla / pasta',qty:pasta,unit:'kg',nota:'0.15 kg/m de junta'});}
+  if(document.getElementById('chkLana').checked){resultados.push({cat:'Aislación',nombre:'Lana de vidrio 50mm',qty:lana,unit:'m²',nota:'Área neta + 5%'});}
+
+  const proy=document.getElementById('proyNombre').value||'—';
+  let h=`<div class="chips">`;
+  [[totLong.toFixed(2),'ML totales','m'],[totBruta.toFixed(2),'Área bruta','m²'],[totNeta.toFixed(2),'Área neta','m²'],[muros.length,'Muros','unidades'],[caras===2?'Doble':'Simple','Sistema','cara']].forEach(([v,l,u])=>{h+=`<div class="chip"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;});
+  h+=`</div><p style="font-size:10px;color:var(--muted);margin-bottom:14px;">${proy.toUpperCase()}</p>`;
+  h+=`<table class="res-table"><thead><tr><th>Material</th><th>Cantidad</th><th>Unidad</th><th>Nota</th></tr></thead><tbody>`;
+  [...new Set(resultados.map(r=>r.cat))].forEach(cat=>{
+    h+=`<tr class="cat-row"><td colspan="4">${cat}</td></tr>`;
+    resultados.filter(r=>r.cat===cat).forEach(r=>{h+=`<tr><td class="td-name">${r.nombre}</td><td class="td-qty">${r.qty.toLocaleString('es-AR')}</td><td class="td-unit">${r.unit}</td><td class="td-note">${r.nota}</td></tr>`;});
+  });
+  h+=`</tbody></table><table class="res-table"><thead><tr><th>Muro</th><th>Long.</th><th>Altura</th><th>Bruta</th><th>Aberturas</th><th>Neta</th></tr></thead><tbody>`;
+  muros.forEach(m=>{const b=(m.long*m.altura).toFixed(2),a=(m.nAberturas*m.abAncho*m.abAltura).toFixed(2),n=(m.long*m.altura-m.nAberturas*m.abAncho*m.abAltura).toFixed(2);h+=`<tr><td class="td-name">${m.nombre}</td><td>${m.long}m</td><td>${m.altura}m</td><td>${b} m²</td><td style="color:var(--muted)">${m.nAberturas>0?`${m.nAberturas} (−${a} m²)`:'—'}</td><td class="td-qty" style="font-size:13px;">${n} m²</td></tr>`;});
+  h+=`</tbody></table>`;
+  document.getElementById('resultsArea').innerHTML=h;
+}
+
+// ── EXPORT ──
+function exportCSV() {
+  if(!resultados.length){alert('Calculá primero.');return;}
+  const proy=document.getElementById('proyNombre').value||'computo';
+  let csv='Categoría,Material,Cantidad,Unidad,Nota\n';
+  resultados.forEach(r=>{csv+=`"${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`;});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=`${proy.replace(/\s+/g,'_')}_computo.csv`; a.click();
+}
+</script>
+</body>
+</html>
