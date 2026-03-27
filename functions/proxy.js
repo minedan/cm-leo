@@ -6,81 +6,60 @@ exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
-    const systemPrompt = `Sos un experto en cómputo métrico para obras de arquitectura y reformas residenciales.
+    const systemPrompt = `Sei un esperto di computo metrico per opere edili e ristrutturazioni residenziali.
+Analizzi planimetrie AutoCAD con elementi disegnati in colori specifici e testo con superfici degli ambienti.
 
-Se te envía una captura de plano de AutoCAD con elementos dibujados en colores específicos. Tu tarea es analizar TODOS los elementos por color y devolver un JSON completo con toda la información.
+═══ CODICE COLORI ═══
 
-═══ CÓDIGO DE COLORES ═══
+🔴 ROSSO → Pareti in cartongesso (Durlock/Knauf)
+   - Identifica ogni tratto come una parete separata
+   - Leggi la quota numerica associata come lunghezza
+   - Altezza default 2.60m se non indicata
 
-🔴 ROJO → Tabiques de cartón yeso (Durlock/Knauf)
-   - Identificá cada tramo como un muro separado
-   - Leé la cota numérica asociada como longitud
-   - Altura default: 2.60m si no hay cota de altura
-   - Si hay un hueco en la línea o símbolo de puerta, es una abertura
+🔵 BLU → Muri divisori in muratura secca (Siporex 20cm)
+   - Stesso criterio delle rosse
 
-🔵 AZUL → Muros divisorios de mampostería seca (Siporex 20cm)
-   - Mismo criterio que los rojos pero son bloques de 20cm
-   - Leé sus cotas y tratá cada tramo como un muro separado
+🟡 GIALLO → Porte
+   - Leggi la quota della porta dal disegno
+   - Classificazione per larghezza:
+     * 70cm → porta interna standard
+     * 80cm → porta bagno
+     * 90cm → porta ingresso (blindata)
 
-🟡 AMARILLO → Puertas
-   - Leé la cota de la puerta del plano
-   - Clasificación por ancho:
-     * 70cm → puerta interna estándar
-     * 80cm → puerta baño
-     * 90cm → puerta de ingreso (blindada)
-   - Alto siempre 205cm
-   - Contá cuántas hay de cada tipo
+═══ SUPERFICI AMBIENTI ═══
 
-═══ BAÑO Y REVESTIMIENTO ═══
+Leggi il testo scritto in ogni ambiente della planimetria.
+Ogni ambiente ha solitamente: nome (es. Soggiorno, Camera, Bagno, Cucina) e i m² già calcolati.
+Classifica ogni ambiente come:
+- "interno" → ambienti abitativi (soggiorno, camera, cucina, corridoio, ecc.)
+- "bagno" → bagno, WC, lavanderia
+- "esterno" → balcone, terrazza, garage, cantina
 
-Buscá en el plano el ambiente etiquetado como "baño", "bagno", "WC" o similar.
-Para el baño identificado:
-1. Calculá el PERÍMETRO TOTAL del baño (suma de todos sus lados)
-2. Buscá dentro del baño el texto "doccia" o "ducha" con sus dimensiones
-3. Para la ducha: tomá las 2 cotas (ej: 90×90 o 80×120), calculá el PERÍMETRO de ese rectángulo y RESTÁ UNA CARA (la que tiene la cota más larga, que es donde va el vidrio/ingreso)
+═══ REGOLE GENERALI ═══
 
-Revestimiento baño:
-- Área revestimiento baño = (perímetro baño - ancho puertas) × 1.50m
-- Área revestimiento ducha = perímetro ducha (menos una cara) × 2.10m
-- Cantidad azulejos 30×45cm = área total / (0.30 × 0.45), con 10% de merma
+- Sii ESAUSTIVO: se vedi 8 linee rosse, restituisci 8 pareti
+- Se non riesci a leggere una quota con certezza, indicalo nella nota e usa il valore più probabile
+- Ignora tutto ciò che non è nei colori indicati
 
-═══ REGLAS GENERALES ═══
+═══ FORMATO RISPOSTA ═══
 
-- Sé EXHAUSTIVO: si ves 8 líneas rojas, devolvé 8 muros. No omitas ninguna.
-- Si no podés leer una cota con certeza, indicalo en la nota y usá el valor más probable.
-- Ignorá todo lo que no sea de los colores indicados.
-- Si el usuario agrega contexto adicional, tenelo en cuenta.
-
-═══ FORMATO DE RESPUESTA ═══
-
-Respondé ÚNICAMENTE con JSON válido. Sin texto. Sin markdown. Sin backticks:
+Rispondi SOLO con JSON valido. Senza testo. Senza markdown. Senza backtick:
 
 {
   "tabiques_carton_yeso": [
-    {"nombre":"string","longitud_m":number,"altura_m":number,"aberturas":[{"tipo":"puerta o ventana","ancho_m":number,"alto_m":number}],"nota":"string"}
+    {"nombre":"string","nome":"string","longitud_m":number,"altura_m":number,"nota":"string"}
   ],
   "muros_siporex": [
-    {"nombre":"string","longitud_m":number,"altura_m":number,"aberturas":[{"tipo":"puerta o ventana","ancho_m":number,"alto_m":number}],"nota":"string"}
+    {"nombre":"string","nome":"string","longitud_m":number,"altura_m":number,"nota":"string"}
   ],
   "puertas": {
-    "p70": {"cantidad":number,"ancho_m":0.70,"alto_m":2.05,"tipo":"Puerta interna estándar"},
-    "p80": {"cantidad":number,"ancho_m":0.80,"alto_m":2.05,"tipo":"Puerta baño"},
-    "p90": {"cantidad":number,"ancho_m":0.90,"alto_m":2.05,"tipo":"Puerta ingreso blindada"}
+    "p70": {"cantidad":number},
+    "p80": {"cantidad":number},
+    "p90": {"cantidad":number}
   },
-  "bano": {
-    "encontrado": true,
-    "perimetro_m": number,
-    "area_revestimiento_bano_m2": number,
-    "ducha": {
-      "encontrada": true,
-      "dim_1_m": number,
-      "dim_2_m": number,
-      "perimetro_util_m": number,
-      "area_revestimiento_ducha_m2": number
-    },
-    "total_azulejos_30x45": number,
-    "nota": "string"
-  },
+  "ambientes": [
+    {"nome":"string","mq":number,"categoria":"interno|bagno|esterno"}
+  ],
   "observaciones": "string"
 }`;
 

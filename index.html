@@ -1,42 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CÓMPUTO INTEGRAL · Vision AI</title>
+<title>COMPUTO METRICO · Vision AI</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0a0a0a; --s1:#141414; --s2:#1c1c1c; --s3:#242424;
-  --b1:#272727; --b2:#333; --b3:#444;
-  --lime:#d4f54e; --lime-d:#a8c43d; --lime-g:rgba(212,245,78,0.07);
-  --red:#ff5555; --red-g:rgba(255,85,85,0.08);
-  --blue:#4e9fff; --blue-g:rgba(78,159,255,0.08);
-  --yellow:#ffd84e; --yellow-g:rgba(255,216,78,0.08);
-  --teal:#4ef5d4; --teal-g:rgba(78,245,212,0.08);
-  --text:#e4e4e4; --muted:#555; --muted2:#777; --danger:#ff4e4e;
-}
+:root{--bg:#0a0a0a;--s1:#141414;--s2:#1c1c1c;--b1:#272727;--b2:#333;--lime:#d4f54e;--lime-d:#a8c43d;--lime-g:rgba(212,245,78,0.07);--red:#ff5555;--red-g:rgba(255,85,85,0.08);--blue:#4e9fff;--blue-g:rgba(78,159,255,0.08);--yellow:#ffd84e;--yellow-g:rgba(255,216,78,0.08);--teal:#4ef5d4;--teal-g:rgba(78,245,212,0.08);--text:#e4e4e4;--muted:#555;--muted2:#777;--danger:#ff4e4e;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;min-height:100vh;}
-
-header{padding:14px 28px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:50;}
+header{padding:13px 26px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:50;}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--lime);}
 .logo span{color:var(--muted);font-weight:400;font-size:11px;font-family:'DM Mono',monospace;margin-left:6px;}
-.badges{display:flex;gap:6px;}
-.badge{font-size:9px;letter-spacing:0.12em;padding:3px 8px;border-radius:2px;border:1px solid;}
+.badges{display:flex;gap:5px;flex-wrap:wrap;}
+.badge{font-size:9px;letter-spacing:0.1em;padding:3px 8px;border-radius:2px;border:1px solid;}
 .badge-r{color:var(--red);border-color:rgba(255,85,85,0.3);background:var(--red-g);}
 .badge-b{color:var(--blue);border-color:rgba(78,159,255,0.3);background:var(--blue-g);}
 .badge-y{color:var(--yellow);border-color:rgba(255,216,78,0.3);background:var(--yellow-g);}
 .badge-t{color:var(--teal);border-color:rgba(78,245,212,0.3);background:var(--teal-g);}
-
-.app{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 49px);}
-
-/* SIDEBAR */
+.app{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 47px);}
 .sidebar{border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow-y:auto;}
-.sec{padding:14px 18px;border-bottom:1px solid var(--b1);}
-.sec-t{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec{padding:13px 17px;border-bottom:1px solid var(--b1);}
+.sec-t{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
 .sec-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-
 .field{margin-bottom:8px;}
 .lbl{font-size:10px;color:var(--muted2);display:block;margin-bottom:3px;}
 input[type="text"],input[type="number"],select,textarea{width:100%;background:var(--s1);border:1px solid var(--b1);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:7px 10px;border-radius:4px;outline:none;transition:border-color 0.15s;appearance:none;}
@@ -45,41 +31,34 @@ input[type="number"]{-moz-appearance:textfield;}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;}
 textarea{resize:none;font-size:11px;line-height:1.6;color:var(--muted2);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-
-.upload-zone{border:1px dashed var(--b2);border-radius:5px;padding:18px 12px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;background:var(--s1);}
+.upload-zone{border:1px dashed var(--b2);border-radius:5px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;background:var(--s1);}
 .upload-zone:hover{border-color:var(--lime);background:var(--lime-g);}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
 .upload-text{font-size:11px;color:var(--muted2);line-height:1.7;}
 .upload-text strong{color:var(--lime);}
-.preview-img{width:100%;border-radius:4px;border:1px solid var(--b1);display:block;max-height:160px;object-fit:cover;}
+.preview-img{width:100%;border-radius:4px;border:1px solid var(--b1);display:block;max-height:150px;object-fit:cover;}
 .preview-remove{position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.75);border:none;color:var(--text);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:11px;}
-
-/* Superfici */
-.sup-list{display:flex;flex-direction:column;gap:5px;}
-.sup-item{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:7px 10px;display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;}
-.sup-cat{font-size:9px;padding:2px 7px;border-radius:2px;font-weight:500;}
-.sup-cat-i{background:var(--lime-g);color:var(--lime);border:1px solid rgba(212,245,78,0.2);}
-.sup-cat-b{background:var(--teal-g);color:var(--teal);border:1px solid rgba(78,245,212,0.2);}
-.sup-cat-e{background:var(--blue-g);color:var(--blue);border:1px solid rgba(78,159,255,0.2);}
-.sup-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:1px 5px;}
-.sup-del:hover{color:var(--danger);}
-
-/* Buttons */
+.tog-row{display:flex;gap:5px;flex-wrap:wrap;}
+.tog{background:var(--s2);border:1px solid var(--b1);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:5px 11px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
+.tog.on{background:var(--lime);border-color:var(--lime);color:#000;font-weight:500;}
+.riv-preview{background:var(--s2);border:1px solid rgba(78,245,212,0.2);border-radius:4px;padding:10px 12px;margin-top:8px;display:none;}
+.riv-preview-title{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;}
+.riv-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid rgba(78,245,212,0.07);}
+.riv-row:last-child{border-bottom:none;padding-top:6px;margin-top:2px;}
+.riv-lbl{color:var(--muted2);}
+.riv-val{color:var(--teal);font-weight:500;}
+.riv-val-big{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--lime);}
 .btn-lime{width:100%;background:var(--lime);border:none;color:#000;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:11px;border-radius:4px;cursor:pointer;transition:background 0.12s;}
 .btn-lime:hover{background:var(--lime-d);}
 .btn-lime:disabled{background:var(--s2);color:var(--muted);cursor:not-allowed;border:1px solid var(--b1);}
-.btn-ghost{width:100%;background:transparent;border:1px dashed var(--b2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:8px;border-radius:4px;cursor:pointer;transition:all 0.15s;margin-top:5px;letter-spacing:0.08em;}
-.btn-ghost:hover{border-color:var(--lime);color:var(--lime);}
 .btn-outline-lime{width:100%;background:transparent;border:1px solid var(--lime);color:var(--lime);font-family:'Syne',sans-serif;font-weight:600;font-size:13px;padding:10px;border-radius:4px;cursor:pointer;transition:all 0.12s;margin-top:5px;}
 .btn-outline-lime:hover{background:var(--lime-g);}
 .btn-sm{background:var(--s2);border:1px solid var(--b1);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
 .btn-sm:hover{border-color:var(--lime);color:var(--lime);}
-
-/* MAIN */
+.btn-print{background:var(--lime);border:none;color:#000;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;padding:6px 14px;border-radius:3px;cursor:pointer;}
+.btn-print:hover{background:var(--lime-d);}
 .main{display:flex;flex-direction:column;overflow:hidden;}
-
-/* AI Panel */
-.ai-panel{padding:16px 22px;border-bottom:1px solid var(--b1);}
+.ai-panel{padding:14px 20px;border-bottom:1px solid var(--b1);}
 .ai-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .ai-title{font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
@@ -87,668 +66,684 @@ textarea{resize:none;font-size:11px;line-height:1.6;color:var(--muted2);}
 .dot.done{background:var(--lime);}
 @keyframes dp{0%,100%{opacity:1;}50%{opacity:0.25;}}
 .ai-stxt{font-size:10px;color:var(--muted);letter-spacing:0.08em;}
-
-.state-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:7px;text-align:center;}
+.state-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;gap:7px;text-align:center;}
 .state-empty p{font-size:11px;color:var(--muted2);line-height:1.7;}
-.spinner-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;gap:10px;}
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;padding:22px;gap:10px;}
 .spinner{width:20px;height:20px;border:2px solid var(--b2);border-top-color:var(--lime);border-radius:50%;animation:spin 0.75s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .spinner-msg{font-size:11px;color:var(--muted2);font-style:italic;}
-
-/* Color sections */
-.color-section{margin-bottom:14px;}
-.cs-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;}
-.cs-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.cs-dot-r{background:var(--red);}
-.cs-dot-b{background:var(--blue);}
-.cs-dot-y{background:var(--yellow);}
-.cs-dot-t{background:var(--teal);}
-
-.ai-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px;margin-bottom:8px;}
-.ai-card{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:10px;cursor:pointer;transition:border-color 0.15s;}
+.color-section{margin-bottom:12px;}
+.cs-hdr{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;}
+.cs-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ai-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px;margin-bottom:7px;}
+.ai-card{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:9px;cursor:pointer;transition:border-color 0.15s;}
 .ai-card.sel-r{border-color:var(--red);background:var(--red-g);}
 .ai-card.sel-b{border-color:var(--blue);background:var(--blue-g);}
-.ai-card.sel-y{border-color:var(--yellow);background:var(--yellow-g);}
-.ai-card-top{display:flex;align-items:start;justify-content:space-between;margin-bottom:7px;}
+.ai-card-top{display:flex;align-items:start;justify-content:space-between;margin-bottom:6px;}
 .ai-card-name{font-size:11px;font-weight:500;line-height:1.3;}
-.ai-card-name-r{color:var(--red);}
-.ai-card-name-b{color:var(--blue);}
-.ai-card-name-y{color:var(--yellow);}
-.ai-card-chk{accent-color:var(--lime);width:13px;height:13px;flex-shrink:0;margin-left:5px;}
-.ai-cf{margin-bottom:5px;}
+.nm-r{color:var(--red);}
+.nm-b{color:var(--blue);}
+.ai-card-chk{accent-color:var(--lime);width:13px;height:13px;flex-shrink:0;margin-left:4px;}
+.ai-cf{margin-bottom:4px;}
 .ai-cf label{font-size:9px;color:var(--muted);display:block;margin-bottom:2px;}
 .ai-cf input{width:100%;font-size:11px;padding:4px 7px;background:var(--s2);border:1px solid var(--b1);border-radius:3px;color:var(--text);font-family:'DM Mono',monospace;outline:none;}
 .ai-cf input:focus{border-color:var(--lime);}
-.ai-note-txt{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;font-style:italic;}
-
-/* Baño card */
-.bano-card{background:var(--teal-g);border:1px solid rgba(78,245,212,0.2);border-radius:5px;padding:12px;margin-bottom:8px;}
-.bano-title{font-size:11px;font-weight:500;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.bano-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(78,245,212,0.1);}
-.bano-row:last-child{border-bottom:none;}
-.bano-lbl{font-size:10px;color:var(--muted2);}
-.bano-val{font-size:13px;font-weight:500;color:var(--teal);}
-
-/* Puertas summary */
-.puertas-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px;}
-.puerta-chip{background:var(--yellow-g);border:1px solid rgba(255,216,78,0.2);border-radius:4px;padding:8px 10px;text-align:center;}
-.puerta-qty{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--yellow);line-height:1;}
-.puerta-lbl{font-size:9px;color:var(--muted);margin-top:3px;}
-
-.import-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
-.btn-import{background:var(--lime);border:none;color:#000;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:6px 14px;border-radius:3px;cursor:pointer;transition:background 0.12s;}
+.ai-note-txt{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.5;font-style:italic;}
+.sup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;}
+.sup-card{border-radius:4px;padding:9px 10px;}
+.sci{background:var(--lime-g);border:1px solid rgba(212,245,78,0.2);}
+.scb{background:var(--teal-g);border:1px solid rgba(78,245,212,0.2);}
+.sce{background:var(--blue-g);border:1px solid rgba(78,159,255,0.2);}
+.sup-card-nome{font-size:11px;font-weight:500;margin-bottom:3px;}
+.sci .sup-card-nome{color:var(--lime);}
+.scb .sup-card-nome{color:var(--teal);}
+.sce .sup-card-nome{color:var(--blue);}
+.sup-card-mq{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;line-height:1;}
+.sci .sup-card-mq{color:var(--lime);}
+.scb .sup-card-mq{color:var(--teal);}
+.sce .sup-card-mq{color:var(--blue);}
+.sup-card-cat{font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:0.1em;}
+.puertas-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.puerta-chip{background:var(--yellow-g);border:1px solid rgba(255,216,78,0.2);border-radius:4px;padding:7px 9px;text-align:center;}
+.puerta-qty{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--yellow);line-height:1;}
+.puerta-lbl{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.import-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.btn-import{background:var(--lime);border:none;color:#000;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:6px 14px;border-radius:3px;cursor:pointer;}
 .btn-import:hover{background:var(--lime-d);}
-.btn-import-all{background:transparent;border:1px solid var(--b2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
-.btn-import-all:hover{border-color:var(--lime);color:var(--lime);}
-
-/* Results */
-.results-panel{flex:1;padding:16px 22px;overflow-y:auto;}
-.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.results-panel{flex:1;padding:16px 20px;overflow-y:auto;}
+.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .res-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
-
-.res-tabs{display:flex;gap:0;border-bottom:1px solid var(--b1);margin-bottom:16px;}
-.res-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding:7px 14px;cursor:pointer;margin-bottom:-1px;transition:all 0.15s;letter-spacing:0.04em;}
+.res-hdr-btns{display:flex;gap:6px;}
+.res-tabs{display:flex;gap:0;border-bottom:1px solid var(--b1);margin-bottom:14px;overflow-x:auto;}
+.res-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding:6px 13px;cursor:pointer;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap;}
 .res-tab.active{color:var(--lime);border-bottom-color:var(--lime);}
-
-.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px;margin-bottom:18px;}
-.chip{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:10px 12px;}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:6px;margin-bottom:16px;}
+.chip{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:9px 11px;}
 .chip-lbl{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:0.1em;text-transform:uppercase;}
-.chip-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1;}
+.chip-val{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1;}
 .chip-unit{font-size:9px;color:var(--muted);margin-top:2px;}
-.chip-lime .chip-val{color:var(--lime);}
-.chip-red .chip-val{color:var(--red);}
-.chip-blue .chip-val{color:var(--blue);}
-.chip-yellow .chip-val{color:var(--yellow);}
-.chip-teal .chip-val{color:var(--teal);}
-
-.res-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:20px;}
+.cl .chip-val{color:var(--lime);}
+.cr .chip-val{color:var(--red);}
+.cb .chip-val{color:var(--blue);}
+.cy .chip-val{color:var(--yellow);}
+.ct .chip-val{color:var(--teal);}
+.res-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:18px;}
 .res-table th{text-align:left;font-size:9px;color:var(--muted);padding:5px 9px;border-bottom:1px solid var(--b1);font-weight:400;letter-spacing:0.12em;text-transform:uppercase;}
-.res-table td{padding:8px 9px;border-bottom:1px solid #131313;}
+.res-table td{padding:8px 9px;border-bottom:1px solid #131313;vertical-align:middle;}
 .res-table tr:hover td{background:var(--s1);}
 .res-table tr.cat-row td{background:var(--s2);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;}
 .td-name{color:var(--text);font-size:11px;}
-.td-qty{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.td-qty{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--lime);}
 .td-unit{color:var(--muted);font-size:10px;}
 .td-note{color:var(--muted);font-size:10px;line-height:1.5;}
-
-/* Superfici results */
-.sup-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:16px;}
-.sup-block{border-radius:5px;padding:12px;border:1px solid;}
-.sup-block-i{background:var(--lime-g);border-color:rgba(212,245,78,0.2);}
-.sup-block-b{background:var(--teal-g);border-color:rgba(78,245,212,0.2);}
-.sup-block-e{background:var(--blue-g);border-color:rgba(78,159,255,0.2);}
-.sup-block-lbl{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px;}
-.sup-block-i .sup-block-lbl{color:var(--lime);}
-.sup-block-b .sup-block-lbl{color:var(--teal);}
-.sup-block-e .sup-block-lbl{color:var(--blue);}
-.sup-block-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1;}
-.sup-block-i .sup-block-val{color:var(--lime);}
-.sup-block-b .sup-block-val{color:var(--teal);}
-.sup-block-e .sup-block-val{color:var(--blue);}
-.sup-block-unit{font-size:10px;color:var(--muted);margin-top:2px;}
-.sup-block-list{margin-top:8px;border-top:1px solid rgba(255,255,255,0.05);padding-top:7px;display:flex;flex-direction:column;gap:3px;}
-.sup-block-item{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);}
-
-.empty-res{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:140px;gap:7px;color:var(--muted);font-size:11px;text-align:center;}
-.error-box{background:rgba(255,78,78,0.07);border:1px solid rgba(255,78,78,0.25);border-radius:4px;padding:11px 13px;font-size:11px;color:#ff8080;line-height:1.7;}
-
-/* Modal */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;align-items:center;justify-content:center;}
-.overlay.open{display:flex;}
-.modal{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:22px;width:360px;max-width:94vw;}
-.modal-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--lime);margin-bottom:14px;}
-.tog-row{display:flex;gap:5px;flex-wrap:wrap;}
-.tog{background:var(--s2);border:1px solid var(--b1);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:5px 11px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
-.tog.on{background:var(--lime);border-color:var(--lime);color:#000;font-weight:500;}
-.modal-actions{display:flex;gap:7px;margin-top:14px;}
-.m-ok{flex:1;background:var(--lime);border:none;color:#000;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;padding:9px;border-radius:3px;cursor:pointer;}
-.m-cancel{flex:1;background:transparent;border:1px solid var(--b1);color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;padding:9px;border-radius:3px;cursor:pointer;}
-
+.td-price{color:var(--text);font-size:11px;text-align:right;}
+.td-total{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--lime);text-align:right;}
+.sup-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
+.sup-block{border-radius:5px;padding:11px;border:1px solid;}
+.sbi{background:var(--lime-g);border-color:rgba(212,245,78,0.2);}
+.sbb{background:var(--teal-g);border-color:rgba(78,245,212,0.2);}
+.sbe{background:var(--blue-g);border-color:rgba(78,159,255,0.2);}
+.sbl{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.sbi .sbl{color:var(--lime);}
+.sbb .sbl{color:var(--teal);}
+.sbe .sbl{color:var(--blue);}
+.sbv{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;line-height:1;}
+.sbi .sbv{color:var(--lime);}
+.sbb .sbv{color:var(--teal);}
+.sbe .sbv{color:var(--blue);}
+.sbu{font-size:9px;color:var(--muted);margin-top:2px;}
+.sbl-list{margin-top:7px;border-top:1px solid rgba(255,255,255,0.05);padding-top:6px;display:flex;flex-direction:column;gap:3px;}
+.sbl-item{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);}
+.empty-res{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;gap:7px;color:var(--muted);font-size:11px;text-align:center;}
+.error-box{background:rgba(255,78,78,0.07);border:1px solid rgba(255,78,78,0.25);border-radius:4px;padding:10px 12px;font-size:11px;color:#ff8080;line-height:1.7;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
+.ordine-header{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--b1);}
+.ordine-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--lime);margin-bottom:8px;}
+.ordine-meta{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;color:var(--muted2);}
+.ordine-meta span{color:var(--text);}
+.price-input{width:80px;font-size:11px;padding:3px 6px;text-align:right;background:var(--s2);border:1px solid var(--b1);color:var(--text);font-family:'DM Mono',monospace;border-radius:3px;}
+@media print{
+  body{background:#fff;color:#000;}
+  header,.sidebar,.res-tabs,.res-hdr-btns,.ai-panel{display:none!important;}
+  .app{grid-template-columns:1fr;}
+  .main{overflow:visible;}
+  .results-panel{padding:20px;}
+  .tab-content{display:block!important;}
+  .res-table td,.res-table th{border-color:#ccc;color:#000;}
+  .td-qty,.td-total,.chip-val,.sbv{color:#000;}
+  .chip,.sup-block{border-color:#ccc;background:#f5f5f5;}
+  .price-input{border:none;background:transparent;}
+}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="logo">CÓMPUTO<span>.integral</span></div>
+  <div class="logo">COMPUTO<span>.metrico</span></div>
   <div class="badges">
-    <div class="badge badge-r">ROJO · YESO</div>
-    <div class="badge badge-b">AZUL · SIPOREX</div>
-    <div class="badge badge-y">AMARILLO · PUERTAS</div>
-    <div class="badge badge-t">BAÑO · REVESTIMIENTO</div>
+    <div class="badge badge-r">ROSSO · CARTONGESSO</div>
+    <div class="badge badge-b">BLU · SIPOREX</div>
+    <div class="badge badge-y">GIALLO · PORTE</div>
+    <div class="badge badge-t">RIVESTIMENTO</div>
   </div>
 </header>
 
 <div class="app">
-  <div class="sidebar">
+<div class="sidebar">
 
-    <div class="sec">
-      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Proyecto</div>
-      <div class="field"><label class="lbl">Nombre</label><input type="text" id="proyNombre" placeholder="Ej: Dpto 4B — Reforma 2026"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Plano AutoCAD</div>
-      <div id="uploadZone" class="upload-zone">
-        <input type="file" id="fileInput" accept="image/*">
-        <div class="upload-text"><strong>Clic o arrastrá</strong><br>🔴 Rojo=Yeso · 🔵 Azul=Siporex · 🟡 Amarillo=Puertas<br><span style="font-size:10px;color:var(--muted);">PNG · JPG</span></div>
-      </div>
-      <div id="previewWrap" style="display:none;margin-top:8px;position:relative;">
-        <img id="previewImg" class="preview-img" src="" alt="">
-        <button class="preview-remove" onclick="removeImg()">✕</button>
-      </div>
-      <div class="field" style="margin-top:9px;">
-        <label class="lbl">Contexto adicional (opcional)</label>
-        <textarea id="aiCtx" rows="2" placeholder="Ej: Hay 2 baños. La ducha del baño principal mide 80×120."></textarea>
-      </div>
-      <button class="btn-lime" id="btnAnalyze" onclick="analizarPlano()" disabled style="margin-top:8px;">⬡ Analizar con Vision AI</button>
-    </div>
-
-    <div class="sec">
-      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Configuración tabiques</div>
-      <div class="field">
-        <label class="lbl">Sistema cartón yeso</label>
-        <div class="tog-row" id="togSist">
-          <button class="tog on" data-v="simple">Simple</button>
-          <button class="tog" data-v="doble">Doble cara</button>
-        </div>
-      </div>
-      <div class="row2 field">
-        <div><label class="lbl">Sep. montantes</label>
-          <select id="sepM"><option value="0.4">400mm</option><option value="0.6" selected>600mm</option></select>
-        </div>
-        <div><label class="lbl">Alto placa (m)</label><input type="number" id="pAlto" value="2.6" step="0.1"></div>
-      </div>
-    </div>
-
-    <div class="sec" style="flex:1;">
-      <div class="sec-t"><div class="sec-dot" style="background:var(--teal)"></div>Superfici calpestabili</div>
-      <div id="supList" class="sup-list"><p style="font-size:11px;color:var(--muted);">Sin superficies cargadas.</p></div>
-      <button class="btn-ghost" onclick="openSupModal()">+ AGREGAR SUPERFICIE</button>
-    </div>
-
-    <div style="padding:12px 18px;border-top:1px solid var(--b1);">
-      <button class="btn-outline-lime" onclick="calcular()">▶ CALCULAR CÓMPUTO</button>
-    </div>
-
-  </div>
-
-  <div class="main">
-    <div class="ai-panel">
-      <div class="ai-hdr">
-        <div class="ai-title"><div class="dot" id="statusDot"></div>Lectura de plano</div>
-        <div class="ai-stxt" id="aiStxt">ESPERANDO IMAGEN</div>
-      </div>
-      <div id="aiContent">
-        <div class="state-empty">
-          <p>Subí una captura de AutoCAD con el código de colores.<br>La IA identificará todos los elementos automáticamente.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="results-panel">
-      <div class="res-hdr">
-        <div class="res-title">Cómputo</div>
-        <button class="btn-sm" onclick="exportCSV()">↓ CSV</button>
-      </div>
-      <div class="res-tabs">
-        <button class="res-tab active" onclick="showTab('tabYeso')">Cartón yeso</button>
-        <button class="res-tab" onclick="showTab('tabSiporex')">Siporex</button>
-        <button class="res-tab" onclick="showTab('tabPuertas')">Puertas</button>
-        <button class="res-tab" onclick="showTab('tabBano')">Baño</button>
-        <button class="res-tab" onclick="showTab('tabSup')">Superfici</button>
-      </div>
-      <div id="tabYeso" class="tab-content active"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
-      <div id="tabSiporex" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
-      <div id="tabPuertas" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
-      <div id="tabBano" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
-      <div id="tabSup" class="tab-content"><div class="empty-res"><div>Agregá superficies y calculá.</div></div></div>
+  <div class="sec">
+    <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Progetto</div>
+    <div class="field"><label class="lbl">Nome progetto</label><input type="text" id="proyNombre" placeholder="Es: Appartamento 4B 2026"></div>
+    <div class="field"><label class="lbl">Cliente</label><input type="text" id="cliente" placeholder="Nome cliente"></div>
+    <div class="row2 field">
+      <div><label class="lbl">Data</label><input type="text" id="dataDoc"></div>
+      <div><label class="lbl">Rif.</label><input type="text" id="refDoc" placeholder="CM-001"></div>
     </div>
   </div>
+
+  <div class="sec">
+    <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Planimetria AutoCAD</div>
+    <div id="uploadZone" class="upload-zone">
+      <input type="file" id="fileInput" accept="image/*">
+      <div class="upload-text"><strong>Clicca o trascina</strong><br>🔴 Rosso=Cartongesso · 🔵 Blu=Siporex<br>🟡 Giallo=Porte · Nome+m² per ambiente<br><span style="font-size:10px;color:var(--muted);">PNG · JPG</span></div>
+    </div>
+    <div id="previewWrap" style="display:none;margin-top:7px;position:relative;">
+      <img id="previewImg" class="preview-img" src="" alt="">
+      <button class="preview-remove" onclick="removeImg()">✕</button>
+    </div>
+    <div class="field" style="margin-top:8px;">
+      <label class="lbl">Contesto aggiuntivo (opzionale)</label>
+      <textarea id="aiCtx" rows="2" placeholder="Es: Altezza soffitti 2.70m. Il bagno è in basso a destra."></textarea>
+    </div>
+    <button class="btn-lime" id="btnAnalyze" onclick="analizarPlano()" disabled style="margin-top:7px;">⬡ Analizza con Vision AI</button>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Configurazione cartongesso</div>
+    <div class="field"><label class="lbl">Sistema</label>
+      <div class="tog-row" id="togSist">
+        <button class="tog on" data-v="simple">Singola faccia</button>
+        <button class="tog" data-v="doble">Doppia faccia</button>
+      </div>
+    </div>
+    <div class="row2 field">
+      <div><label class="lbl">Dist. montanti</label>
+        <select id="sepM"><option value="0.4">400mm</option><option value="0.6" selected>600mm</option></select>
+      </div>
+      <div><label class="lbl">Alt. lastra (m)</label><input type="number" id="pAlto" value="2.6" step="0.1"></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t"><div class="sec-dot" style="background:var(--teal)"></div>Rivestimento bagno (manuale)</div>
+    <div class="field"><label class="lbl" style="color:var(--teal);">Dimensioni bagno</label>
+      <div class="row2">
+        <div><label class="lbl">Lunghezza (m)</label><input type="number" id="bL" step="0.05" placeholder="0.00" oninput="calcRiv()"></div>
+        <div><label class="lbl">Profondità (m)</label><input type="number" id="bP" step="0.05" placeholder="0.00" oninput="calcRiv()"></div>
+      </div>
+    </div>
+    <div class="field"><label class="lbl" style="color:var(--teal);">Dimensioni doccia</label>
+      <div class="row2">
+        <div><label class="lbl">Lato 1 (m)</label><input type="number" id="dL1" step="0.05" placeholder="0.00" oninput="calcRiv()"></div>
+        <div><label class="lbl">Lato 2 (m)</label><input type="number" id="dL2" step="0.05" placeholder="0.00" oninput="calcRiv()"></div>
+      </div>
+    </div>
+    <div class="field"><label class="lbl">N° porte nel bagno</label>
+      <input type="number" id="bNporte" value="1" min="0" step="1" oninput="calcRiv()">
+    </div>
+    <div id="rivPreview" class="riv-preview">
+      <div class="riv-preview-title">Anteprima calcolo</div>
+      <div class="riv-row"><span class="riv-lbl">Perimetro bagno</span><span class="riv-val" id="pvPer">—</span></div>
+      <div class="riv-row"><span class="riv-lbl">Rivestimento parete ×1.5m</span><span class="riv-val" id="pvParete">—</span></div>
+      <div class="riv-row"><span class="riv-lbl">Rivestimento doccia ×2.1m</span><span class="riv-val" id="pvDoccia">—</span></div>
+      <div class="riv-row"><span class="riv-lbl">Pavimento bagno+doccia</span><span class="riv-val" id="pvPav">—</span></div>
+      <div class="riv-row"><span class="riv-lbl" style="color:var(--teal);font-weight:500;">Tot. piastrelle 30×45</span><span class="riv-val-big" id="pvTot">—</span></div>
+    </div>
+  </div>
+
+  <div style="padding:12px 17px;border-top:1px solid var(--b1);">
+    <button class="btn-outline-lime" onclick="calcular()">▶ CALCOLA COMPUTO</button>
+  </div>
+
 </div>
 
-<!-- Modal superficie -->
-<div class="overlay" id="supOverlay">
-  <div class="modal">
-    <div class="modal-title">+ Superficie calpestabile</div>
-    <div class="field"><label class="lbl">Ambiente</label><input type="text" id="supNombre" placeholder="Ej: Soggiorno, Camera, Bagno principale"></div>
-    <div class="field"><label class="lbl">Superficie (m²)</label><input type="number" id="supM2" step="0.1" placeholder="0.00"></div>
-    <div class="field"><label class="lbl">Categoría</label>
-      <div class="tog-row" id="togCat">
-        <button class="tog on" data-v="interno">Interno</button>
-        <button class="tog" data-v="bagno">Bagno</button>
-        <button class="tog" data-v="esterno">Esterno</button>
-      </div>
+<div class="main">
+  <div class="ai-panel">
+    <div class="ai-hdr">
+      <div class="ai-title"><div class="dot" id="statusDot"></div>Lettura planimetria</div>
+      <div class="ai-stxt" id="aiStxt">IN ATTESA IMMAGINE</div>
     </div>
-    <div class="modal-actions">
-      <button class="m-cancel" onclick="closeSupModal()">Cancelar</button>
-      <button class="m-ok" onclick="addSup()">Agregar</button>
+    <div id="aiContent">
+      <div class="state-empty"><p>Carica una planimetria AutoCAD con il codice colori.<br>L'IA identificherà pareti, porte e superfici automaticamente.</p></div>
     </div>
   </div>
+
+  <div class="results-panel">
+    <div class="res-hdr">
+      <div class="res-title">Computo metrico</div>
+      <div class="res-hdr-btns">
+        <button class="btn-sm" onclick="exportCSV()">↓ CSV</button>
+        <button class="btn-print" onclick="window.print()">⎙ Stampa ordine</button>
+      </div>
+    </div>
+    <div class="res-tabs">
+      <button class="res-tab active" onclick="showTab('tabYeso',this)">Cartongesso</button>
+      <button class="res-tab" onclick="showTab('tabSiporex',this)">Siporex</button>
+      <button class="res-tab" onclick="showTab('tabPorte',this)">Porte</button>
+      <button class="res-tab" onclick="showTab('tabRiv',this)">Rivestimento</button>
+      <button class="res-tab" onclick="showTab('tabSup',this)">Superfici</button>
+      <button class="res-tab" onclick="showTab('tabOrdine',this)">Ordine d'acquisto</button>
+    </div>
+    <div id="tabYeso" class="tab-content active"><div class="empty-res"><div>Calcola per vedere il computo.</div></div></div>
+    <div id="tabSiporex" class="tab-content"><div class="empty-res"><div>Calcola per vedere il computo.</div></div></div>
+    <div id="tabPorte" class="tab-content"><div class="empty-res"><div>Calcola per vedere il computo.</div></div></div>
+    <div id="tabRiv" class="tab-content"><div class="empty-res"><div>Inserisci le dimensioni del bagno nel pannello sinistro.</div></div></div>
+    <div id="tabSup" class="tab-content"><div class="empty-res"><div>L'IA leggerà le superfici dalla planimetria.</div></div></div>
+    <div id="tabOrdine" class="tab-content"><div class="empty-res"><div>Calcola per generare l'ordine d'acquisto.</div></div></div>
+  </div>
+</div>
 </div>
 
 <script>
-// ══ STATE ══
-let murosYeso = [], murosSiporex = [], puertas = {p70:0,p80:0,p90:0};
-let banoData = null, superfici = [], sistemaVal = 'simple';
-let imgBase64 = null, imgMediaType = 'image/jpeg';
-let aiResult = null, resultadosYeso = [], resultadosSiporex = [];
-let catVal = 'interno';
+let murosYeso=[],murosSiporex=[],puertas={p70:{cantidad:0},p80:{cantidad:0},p90:{cantidad:0}};
+let ambientes=[],aiResult=null,sistemaVal='simple';
+let imgBase64=null,imgMediaType='image/jpeg';
+let resultadosYeso=[],resultadosSiporex=[],rivData=null;
 
-// ══ TABS ══
-function showTab(id) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+function showTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.res-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
+  if(btn)btn.classList.add('active');
 }
 
-// ══ TOGGLES ══
-document.querySelectorAll('#togSist .tog').forEach(b => {
-  b.addEventListener('click', () => { document.querySelectorAll('#togSist .tog').forEach(x => x.classList.remove('on')); b.classList.add('on'); sistemaVal = b.dataset.v; });
-});
-document.querySelectorAll('#togCat .tog').forEach(b => {
-  b.addEventListener('click', () => { document.querySelectorAll('#togCat .tog').forEach(x => x.classList.remove('on')); b.classList.add('on'); catVal = b.dataset.v; });
+document.querySelectorAll('#togSist .tog').forEach(b=>{
+  b.addEventListener('click',()=>{document.querySelectorAll('#togSist .tog').forEach(x=>x.classList.remove('on'));b.classList.add('on');sistemaVal=b.dataset.v;});
 });
 
-// ══ FILE UPLOAD ══
-const fileInput = document.getElementById('fileInput');
-const uploadZone = document.getElementById('uploadZone');
-fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--lime)'; });
-uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
-uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+const fileInput=document.getElementById('fileInput');
+const uploadZone=document.getElementById('uploadZone');
+fileInput.addEventListener('change',()=>{if(fileInput.files[0])handleFile(fileInput.files[0]);});
+uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.style.borderColor='var(--lime)';});
+uploadZone.addEventListener('dragleave',()=>{uploadZone.style.borderColor='';});
+uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.style.borderColor='';if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
 
-function handleFile(f) {
-  imgMediaType = f.type || 'image/jpeg';
-  const r = new FileReader();
-  r.onload = e => {
-    imgBase64 = e.target.result.split(',')[1];
-    document.getElementById('previewImg').src = e.target.result;
-    document.getElementById('previewWrap').style.display = 'block';
-    document.getElementById('uploadZone').style.display = 'none';
-    document.getElementById('btnAnalyze').disabled = false;
+function handleFile(f){
+  imgMediaType=f.type||'image/jpeg';
+  const r=new FileReader();
+  r.onload=e=>{
+    imgBase64=e.target.result.split(',')[1];
+    document.getElementById('previewImg').src=e.target.result;
+    document.getElementById('previewWrap').style.display='block';
+    document.getElementById('uploadZone').style.display='none';
+    document.getElementById('btnAnalyze').disabled=false;
   };
   r.readAsDataURL(f);
 }
 
-function removeImg() {
-  imgBase64 = null;
-  document.getElementById('previewWrap').style.display = 'none';
-  document.getElementById('uploadZone').style.display = 'block';
-  document.getElementById('btnAnalyze').disabled = true;
-  fileInput.value = ''; setAIState('idle');
+function removeImg(){
+  imgBase64=null;
+  document.getElementById('previewWrap').style.display='none';
+  document.getElementById('uploadZone').style.display='block';
+  document.getElementById('btnAnalyze').disabled=true;
+  fileInput.value='';setAIState('idle');
 }
 
-// ══ AI STATE ══
-function setAIState(s) {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('aiStxt');
-  dot.className = 'dot' + (s==='loading'?' pulse':s==='done'?' done':'');
-  txt.textContent = {idle:'ESPERANDO IMAGEN',loading:'ANALIZANDO…',done:'LECTURA COMPLETA',error:'ERROR'}[s]||'';
-  txt.style.color = s==='done'?'var(--lime)':s==='error'?'var(--danger)':'var(--muted)';
+function setAIState(s){
+  const dot=document.getElementById('statusDot'),txt=document.getElementById('aiStxt');
+  dot.className='dot'+(s==='loading'?' pulse':s==='done'?' done':'');
+  txt.textContent={idle:'IN ATTESA IMMAGINE',loading:'ANALISI IN CORSO…',done:'LETTURA COMPLETATA',error:'ERRORE'}[s]||'';
+  txt.style.color=s==='done'?'var(--lime)':s==='error'?'var(--danger)':'var(--muted)';
 }
 
-// ══ ANALYZE ══
-async function analizarPlano() {
-  if (!imgBase64) return;
+function calcRiv(){
+  const bL=parseFloat(document.getElementById('bL').value)||0;
+  const bP=parseFloat(document.getElementById('bP').value)||0;
+  const dL1=parseFloat(document.getElementById('dL1').value)||0;
+  const dL2=parseFloat(document.getElementById('dL2').value)||0;
+  const nPorte=parseInt(document.getElementById('bNporte').value)||0;
+  const prev=document.getElementById('rivPreview');
+  if(!bL||!bP){prev.style.display='none';return;}
+  prev.style.display='block';
+
+  const perBagno=2*(bL+bP);
+  const areaParete=(perBagno-nPorte*0.80)*1.50;
+  let perDoccia=0,areaDoccia=0;
+  if(dL1&&dL2){
+    const latoMax=Math.max(dL1,dL2);
+    perDoccia=2*(dL1+dL2)-latoMax;
+    areaDoccia=perDoccia*2.10;
+  }
+  const pavBagno=bL*bP;
+  const pavDoccia=dL1&&dL2?dL1*dL2:0;
+  const totArea=areaParete+areaDoccia+pavBagno+pavDoccia;
+  const totPiastrelle=Math.ceil(totArea/(0.30*0.45)*1.10);
+
+  document.getElementById('pvPer').textContent=perBagno.toFixed(2)+' m';
+  document.getElementById('pvParete').textContent=areaParete.toFixed(2)+' m²';
+  document.getElementById('pvDoccia').textContent=areaDoccia?areaDoccia.toFixed(2)+' m²':'—';
+  document.getElementById('pvPav').textContent=(pavBagno+pavDoccia).toFixed(2)+' m²';
+  document.getElementById('pvTot').textContent=totPiastrelle+' u';
+
+  rivData={perBagno,areaParete,perDoccia,areaDoccia,pavBagno,pavDoccia,totArea,totPiastrelle,
+    piastrelleParete:Math.ceil(areaParete/(0.30*0.45)*1.10),
+    piastrelleDoccia:Math.ceil(areaDoccia/(0.30*0.45)*1.10),
+    piastrellesPavBagno:Math.ceil(pavBagno/(0.30*0.45)*1.10),
+    piastrellesPavDoccia:Math.ceil(pavDoccia/(0.30*0.45)*1.10),
+    bL,bP,dL1,dL2};
+}
+
+async function analizarPlano(){
+  if(!imgBase64)return;
   setAIState('loading');
-  const phrases = ['Detectando colores…','Leyendo tabiques rojos…','Leyendo muros azules…','Analizando puertas…','Calculando revestimiento baño…'];
-  let pi = 0;
-  const cont = document.getElementById('aiContent');
-  cont.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><div class="spinner-msg" id="loadMsg">${phrases[0]}</div></div>`;
-  const interval = setInterval(() => { pi=(pi+1)%phrases.length; const el=document.getElementById('loadMsg'); if(el) el.textContent=phrases[pi]; }, 2000);
+  const phrases=['Rilevamento colori…','Lettura pareti rosse…','Lettura muri blu…','Analisi porte…','Lettura superfici ambienti…'];
+  let pi=0;
+  const cont=document.getElementById('aiContent');
+  cont.innerHTML=`<div class="spinner-wrap"><div class="spinner"></div><div class="spinner-msg" id="loadMsg">${phrases[0]}</div></div>`;
+  const interval=setInterval(()=>{pi=(pi+1)%phrases.length;const el=document.getElementById('loadMsg');if(el)el.textContent=phrases[pi];},1800);
+  const ctx=document.getElementById('aiCtx').value.trim();
 
-  const ctx = document.getElementById('aiCtx').value.trim();
-
-  try {
-    const res = await fetch('/.netlify/functions/proxy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: imgMediaType, data: imgBase64 } },
-            { type: 'text', text: `Analizá este plano de AutoCAD siguiendo el código de colores indicado. Sé exhaustivo con cada color.${ctx ? `\n\nContexto adicional: ${ctx}` : ''}` }
-          ]
-        }]
+  try{
+    const res=await fetch('/.netlify/functions/proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2000,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:imgMediaType,data:imgBase64}},
+          {type:'text',text:`Analizza questa planimetria AutoCAD seguendo il codice colori indicato. Sii esaustivo con tutti gli elementi.${ctx?`\n\nContesto: ${ctx}`:'`}`}
+        ]}]
       })
     });
-
     clearInterval(interval);
-    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
-    const data = await res.json();
-    const raw = data.content.map(b => b.text||'').join('').replace(/```json|```/g,'').trim();
-    aiResult = JSON.parse(raw);
-
-    murosYeso = aiResult.tabiques_carton_yeso || [];
-    murosSiporex = aiResult.muros_siporex || [];
-    puertas = aiResult.puertas || {p70:{cantidad:0},p80:{cantidad:0},p90:{cantidad:0}};
-    banoData = aiResult.bano || null;
-
+    if(!res.ok){const e=await res.json();throw new Error(e.error?.message||`HTTP ${res.status}`);}
+    const data=await res.json();
+    const raw=data.content.map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    aiResult=JSON.parse(raw);
+    murosYeso=aiResult.tabiques_carton_yeso||[];
+    murosSiporex=aiResult.muros_siporex||[];
+    puertas=aiResult.puertas||{p70:{cantidad:0},p80:{cantidad:0},p90:{cantidad:0}};
+    ambientes=aiResult.ambientes||[];
     renderAIResults();
     setAIState('done');
-  } catch(err) {
+  }catch(err){
     clearInterval(interval);
     setAIState('error');
-    cont.innerHTML = `<div class="error-box">⚠ ${err.message}</div>`;
+    cont.innerHTML=`<div class="error-box">⚠ ${err.message}</div>`;
   }
 }
 
-// ══ RENDER AI RESULTS ══
-function renderAIResults() {
-  const cont = document.getElementById('aiContent');
-  let h = '';
+function renderAIResults(){
+  const cont=document.getElementById('aiContent');
+  let h='';
 
-  // ROJOS - Cartón yeso
-  if (murosYeso.length) {
-    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-r"></div><span style="color:var(--red)">Tabiques cartón yeso (${murosYeso.length})</span></div>`;
-    h += `<div class="ai-cards">`;
-    murosYeso.forEach((m, i) => {
-      h += `<div class="ai-card sel-r" id="acy_${i}" onclick="toggleAC('y',${i})">
-        <div class="ai-card-top"><div class="ai-card-name ai-card-name-r">${m.nombre}</div>
+  if(murosYeso.length){
+    h+=`<div class="color-section"><div class="cs-hdr"><div class="cs-dot" style="background:var(--red)"></div><span style="color:var(--red)">Pareti cartongesso (${murosYeso.length})</span></div><div class="ai-cards">`;
+    murosYeso.forEach((m,i)=>{
+      h+=`<div class="ai-card sel-r" id="acy_${i}" onclick="toggleAC('y',${i})">
+        <div class="ai-card-top"><div class="ai-card-name nm-r">${m.nome||m.nombre||'Parete '+i}</div>
         <input type="checkbox" class="ai-card-chk" id="chky_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('acy_${i}').classList.toggle('sel-r',this.checked)"></div>
-        <div class="ai-cf"><label>LONG. (m)</label><input type="number" id="yl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
-        <div class="ai-cf"><label>ALTURA (m)</label><input type="number" id="ya_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>LUNGHEZZA (m)</label><input type="number" id="yl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>ALTEZZA (m)</label><input type="number" id="ya_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
         ${m.nota?`<div class="ai-note-txt">↳ ${m.nota}</div>`:''}
       </div>`;
     });
-    h += `</div></div>`;
+    h+=`</div></div>`;
   }
 
-  // AZULES - Siporex
-  if (murosSiporex.length) {
-    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-b"></div><span style="color:var(--blue)">Muros Siporex (${murosSiporex.length})</span></div>`;
-    h += `<div class="ai-cards">`;
-    murosSiporex.forEach((m, i) => {
-      h += `<div class="ai-card sel-b" id="acs_${i}" onclick="toggleAC('s',${i})">
-        <div class="ai-card-top"><div class="ai-card-name ai-card-name-b">${m.nombre}</div>
+  if(murosSiporex.length){
+    h+=`<div class="color-section"><div class="cs-hdr"><div class="cs-dot" style="background:var(--blue)"></div><span style="color:var(--blue)">Muri Siporex (${murosSiporex.length})</span></div><div class="ai-cards">`;
+    murosSiporex.forEach((m,i)=>{
+      h+=`<div class="ai-card sel-b" id="acs_${i}" onclick="toggleAC('s',${i})">
+        <div class="ai-card-top"><div class="ai-card-name nm-b">${m.nome||m.nombre||'Muro '+i}</div>
         <input type="checkbox" class="ai-card-chk" id="chks_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('acs_${i}').classList.toggle('sel-b',this.checked)"></div>
-        <div class="ai-cf"><label>LONG. (m)</label><input type="number" id="sl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
-        <div class="ai-cf"><label>ALTURA (m)</label><input type="number" id="sa_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>LUNGHEZZA (m)</label><input type="number" id="sl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>ALTEZZA (m)</label><input type="number" id="sa_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
         ${m.nota?`<div class="ai-note-txt">↳ ${m.nota}</div>`:''}
       </div>`;
     });
-    h += `</div></div>`;
+    h+=`</div></div>`;
   }
 
-  // AMARILLOS - Puertas
-  const p = puertas;
-  const tot70 = p.p70?.cantidad||0, tot80 = p.p80?.cantidad||0, tot90 = p.p90?.cantidad||0;
-  if (tot70+tot80+tot90 > 0) {
-    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-y"></div><span style="color:var(--yellow)">Puertas detectadas</span></div>`;
-    h += `<div class="puertas-grid">
-      <div class="puerta-chip"><div class="puerta-qty" id="edit70">${tot70}</div><div class="puerta-lbl">70cm · interna</div></div>
-      <div class="puerta-chip"><div class="puerta-qty" id="edit80">${tot80}</div><div class="puerta-lbl">80cm · baño</div></div>
-      <div class="puerta-chip"><div class="puerta-qty" id="edit90">${tot90}</div><div class="puerta-lbl">90cm · ingreso</div></div>
-    </div>`;
+  const p70=puertas.p70?.cantidad||0,p80=puertas.p80?.cantidad||0,p90=puertas.p90?.cantidad||0;
+  if(p70+p80+p90>0){
+    h+=`<div class="color-section"><div class="cs-hdr"><div class="cs-dot" style="background:var(--yellow)"></div><span style="color:var(--yellow)">Porte rilevate</span></div>
+    <div class="puertas-grid">
+      <div class="puerta-chip"><div class="puerta-qty">${p70}</div><div class="puerta-lbl">70cm · interna</div></div>
+      <div class="puerta-chip"><div class="puerta-qty">${p80}</div><div class="puerta-lbl">80cm · bagno</div></div>
+      <div class="puerta-chip"><div class="puerta-qty">${p90}</div><div class="puerta-lbl">90cm · ingresso</div></div>
+    </div></div>`;
   }
 
-  // BAÑO
-  if (banoData && banoData.encontrado) {
-    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-t"></div><span style="color:var(--teal)">Revestimiento baño</span></div>`;
-    h += `<div class="bano-card">
-      <div class="bano-title">🚿 Baño detectado</div>
-      <div class="bano-row"><span class="bano-lbl">Perímetro baño</span><span class="bano-val">${banoData.perimetro_m} m</span></div>
-      <div class="bano-row"><span class="bano-lbl">Revestimiento pared (×1.5m)</span><span class="bano-val">${banoData.area_revestimiento_bano_m2} m²</span></div>
-      ${banoData.ducha?.encontrada ? `
-      <div class="bano-row"><span class="bano-lbl">Ducha ${banoData.ducha.dim_1_m}×${banoData.ducha.dim_2_m}m</span><span class="bano-val">${banoData.ducha.perimetro_util_m} m útil</span></div>
-      <div class="bano-row"><span class="bano-lbl">Revestimiento ducha (×2.1m)</span><span class="bano-val">${banoData.ducha.area_revestimiento_ducha_m2} m²</span></div>` : ''}
-      <div class="bano-row"><span class="bano-lbl">Total azulejos 30×45cm (+10%)</span><span class="bano-val">${banoData.total_azulejos_30x45} u</span></div>
-      ${banoData.nota?`<div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;">↳ ${banoData.nota}</div>`:''}
-    </div>`;
+  if(ambientes.length){
+    h+=`<div class="color-section"><div class="cs-hdr"><div class="cs-dot" style="background:var(--lime)"></div><span style="color:var(--lime)">Superfici rilevate (${ambientes.length} ambienti)</span></div><div class="sup-grid">`;
+    ambientes.forEach(a=>{
+      const cat=a.categoria||'interno';
+      const cc=cat==='bagno'?'scb':cat==='esterno'?'sce':'sci';
+      const cl=cat==='bagno'?'BAGNO':cat==='esterno'?'ESTERNO':'INTERNO';
+      h+=`<div class="sup-card ${cc}"><div class="sup-card-nome">${a.nome}</div><div class="sup-card-mq">${a.mq}</div><div class="sup-card-cat">${cl}</div></div>`;
+    });
+    h+=`</div></div>`;
   }
 
-  if (aiResult?.observaciones) {
-    h += `<div style="background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:9px 11px;font-size:10px;color:var(--muted2);line-height:1.7;margin-top:8px;"><strong style="color:var(--muted);font-size:9px;letter-spacing:0.1em;">OBSERVACIONES IA</strong><br>${aiResult.observaciones}</div>`;
+  if(aiResult?.observaciones){
+    h+=`<div style="background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:8px 11px;font-size:10px;color:var(--muted2);line-height:1.7;margin-top:7px;"><strong style="color:var(--muted);font-size:9px;letter-spacing:0.1em;">OSSERVAZIONI IA</strong><br>${aiResult.observaciones}</div>`;
   }
 
-  if (!h) { h = `<div class="state-empty"><p>No se detectaron elementos. Verificá los colores del plano.</p></div>`; }
-
-  h += `<div class="import-row">
-    <button class="btn-import" onclick="importarTodo()">↓ Importar todo</button>
-    <button class="btn-import-all" onclick="importarSeleccionados()">↓ Importar seleccionados</button>
-  </div>`;
-
-  cont.innerHTML = h;
+  if(!h){h=`<div class="state-empty"><p>Nessun elemento rilevato. Verifica i colori della planimetria.</p></div>`;}
+  h+=`<div class="import-row"><button class="btn-import" onclick="calcular()">▶ Calcola subito</button></div>`;
+  cont.innerHTML=h;
 }
 
-function toggleAC(tipo, i) {
-  const pfx = tipo==='y'?'acy':'acs', cpfx = tipo==='y'?'chky':'chks';
-  const chk = document.getElementById(`${cpfx}_${i}`);
-  chk.checked = !chk.checked;
-  document.getElementById(`${pfx}_${i}`).classList.toggle(tipo==='y'?'sel-r':'sel-b', chk.checked);
+function toggleAC(tipo,i){
+  const pfx=tipo==='y'?'acy':'acs',cpfx=tipo==='y'?'chky':'chks';
+  const chk=document.getElementById(`${cpfx}_${i}`);
+  chk.checked=!chk.checked;
+  document.getElementById(`${pfx}_${i}`).classList.toggle(tipo==='y'?'sel-r':'sel-b',chk.checked);
 }
 
-// ══ IMPORT ══
-function importarTodo() {
-  murosYeso.forEach((_, i) => importYeso(i));
-  murosSiporex.forEach((_, i) => importSiporex(i));
-}
+function calcular(){
+  const caras=sistemaVal==='doble'?2:1;
+  const sepM=parseFloat(document.getElementById('sepM').value);
+  const pAlt=parseFloat(document.getElementById('pAlto').value);
+  const pAn=1.2;
 
-function importarSeleccionados() {
-  murosYeso.forEach((_, i) => { if (document.getElementById(`chky_${i}`)?.checked) importYeso(i); });
-  murosSiporex.forEach((_, i) => { if (document.getElementById(`chks_${i}`)?.checked) importSiporex(i); });
-}
+  const yeso=murosYeso.map((m,i)=>{
+    const lEl=document.getElementById(`yl_${i}`),aEl=document.getElementById(`ya_${i}`),cEl=document.getElementById(`chky_${i}`);
+    if(cEl&&!cEl.checked)return null;
+    return{...m,long:lEl?parseFloat(lEl.value):m.longitud_m,altura:aEl?parseFloat(aEl.value):m.altura_m};
+  }).filter(Boolean);
 
-function importYeso(i) {
-  const m = murosYeso[i];
-  const long = parseFloat(document.getElementById(`yl_${i}`)?.value ?? m.longitud_m);
-  const alt = parseFloat(document.getElementById(`ya_${i}`)?.value ?? m.altura_m);
-  if (!murosYeso._imported) murosYeso._imported = {};
-  murosYeso._imported[i] = { ...m, long, altura: alt };
-}
+  const sip=murosSiporex.map((m,i)=>{
+    const lEl=document.getElementById(`sl_${i}`),aEl=document.getElementById(`sa_${i}`),cEl=document.getElementById(`chks_${i}`);
+    if(cEl&&!cEl.checked)return null;
+    return{...m,long:lEl?parseFloat(lEl.value):m.longitud_m,altura:aEl?parseFloat(aEl.value):m.altura_m};
+  }).filter(Boolean);
 
-function importSiporex(i) {
-  const m = murosSiporex[i];
-  const long = parseFloat(document.getElementById(`sl_${i}`)?.value ?? m.longitud_m);
-  const alt = parseFloat(document.getElementById(`sa_${i}`)?.value ?? m.altura_m);
-  if (!murosSiporex._imported) murosSiporex._imported = {};
-  murosSiporex._imported[i] = { ...m, long, altura: alt };
-}
+  // CARTONGESSO
+  let totLY=0,totBY=0;
+  yeso.forEach(m=>{totLY+=m.long;totBY+=m.long*m.altura;});
+  const avgAltY=yeso.length?totBY/totLY:2.6;
+  let montC=0;yeso.forEach(m=>{montC+=Math.ceil(m.long/sepM)+1;});
+  const pMC=Math.ceil(montC*avgAltY/3),pSol=Math.ceil(totLY*2/3);
+  const placas=Math.ceil(totBY*caras*1.10/(pAn*pAlt));
+  const tornPF=Math.ceil(totBY*caras*25),tornMS=montC*8;
+  const cinta=Math.ceil((totLY/pAn*pAlt+totLY*Math.max(1,Math.ceil(avgAltY/pAlt)-1))*caras*1.05);
+  const pasta=Math.ceil(cinta*0.15),lana=Math.ceil(totBY*1.05);
 
-// ══ SUPERFICI ══
-function openSupModal() { document.getElementById('supOverlay').classList.add('open'); document.getElementById('supNombre').focus(); }
-function closeSupModal() { document.getElementById('supOverlay').classList.remove('open'); }
-document.getElementById('supOverlay').addEventListener('click', e => { if (e.target===document.getElementById('supOverlay')) closeSupModal(); });
-
-function addSup() {
-  const nombre = document.getElementById('supNombre').value.trim() || `Ambiente ${superfici.length+1}`;
-  const m2 = parseFloat(document.getElementById('supM2').value) || 0;
-  if (m2 <= 0) { alert('Ingresá una superficie válida.'); return; }
-  superfici.push({ nombre, m2, cat: catVal });
-  renderSupList(); closeSupModal();
-  document.getElementById('supNombre').value = ''; document.getElementById('supM2').value = '';
-}
-
-function renderSupList() {
-  const list = document.getElementById('supList');
-  if (!superfici.length) { list.innerHTML = `<p style="font-size:11px;color:var(--muted);">Sin superficies cargadas.</p>`; return; }
-  list.innerHTML = superfici.map((s, i) => {
-    const catClass = s.cat==='bagno'?'sup-cat-b':s.cat==='esterno'?'sup-cat-e':'sup-cat-i';
-    const catLbl = s.cat==='bagno'?'BAGNO':s.cat==='esterno'?'ESTERNO':'INTERNO';
-    return `<div class="sup-item">
-      <span>${s.nombre}</span>
-      <span class="sup-cat ${catClass}">${catLbl}</span>
-      <span style="color:var(--lime);font-size:12px;">${s.m2}m²</span>
-      <button class="sup-del" onclick="delSup(${i})">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function delSup(i) { superfici.splice(i,1); renderSupList(); }
-
-// ══ CALCULAR ══
-function calcular() {
-  const caras = sistemaVal==='doble'?2:1;
-  const sepM = parseFloat(document.getElementById('sepM').value);
-  const pAlt = parseFloat(document.getElementById('pAlto').value);
-  const pAn = 1.2;
-
-  // Usar datos importados o todos los detectados
-  const yeso = murosYeso._imported ? Object.values(murosYeso._imported) : murosYeso.map(m => ({...m, long:m.longitud_m, altura:m.altura_m}));
-  const sip = murosSiporex._imported ? Object.values(murosSiporex._imported) : murosSiporex.map(m => ({...m, long:m.longitud_m, altura:m.altura_m}));
-
-  // ─ CARTÓN YESO ─
-  let totLongY=0, totBrutaY=0, totNetaY=0;
-  yeso.forEach(m => { totLongY+=m.long; const b=m.long*m.altura; totBrutaY+=b; totNetaY+=b; });
-  const avgAltY = yeso.length ? totBrutaY/totLongY : 2.6;
-  let montC=0; yeso.forEach(m => { montC+=Math.ceil(m.long/sepM)+1; });
-  const piezasMC=Math.ceil(montC*avgAltY/3), piezasSol=Math.ceil(totLongY*2/3);
-  const placas=Math.ceil(totNetaY*caras*1.10/(pAn*pAlt));
-  const tornPF=Math.ceil(totNetaY*caras*25), tornMS=montC*8;
-  const cinta=Math.ceil((totLongY/pAn*pAlt+totLongY*Math.max(1,Math.ceil(avgAltY/pAlt)-1))*caras*1.05);
-  const pasta=Math.ceil(cinta*0.15), lana=Math.ceil(totNetaY*1.05);
-
-  resultadosYeso = [];
-  if (yeso.length) {
-    resultadosYeso.push({cat:'Estructura',nombre:'Montante C',qty:piezasMC,unit:'piezas 3m',nota:`${montC} montantes · sep. ${sepM*100}cm`});
-    resultadosYeso.push({cat:'Estructura',nombre:'Solera U',qty:piezasSol,unit:'piezas 3m',nota:`${(totLongY*2).toFixed(1)} m lin.`});
-    resultadosYeso.push({cat:'Placas',nombre:'Placa yeso 1.2×2.6m',qty:placas,unit:'placas',nota:`${totNetaY.toFixed(2)} m² neto · ${caras} cara(s) +10%`});
-    resultadosYeso.push({cat:'Fijaciones',nombre:'Tornillo placa-montante',qty:tornPF,unit:'u',nota:'25u/m²'});
-    resultadosYeso.push({cat:'Fijaciones',nombre:'Tornillo montante-solera',qty:tornMS,unit:'u',nota:'4u/montante × 2 soleras'});
-    resultadosYeso.push({cat:'Terminación',nombre:'Cinta de juntas',qty:cinta,unit:'m',nota:'Juntas V+H +5%'});
-    resultadosYeso.push({cat:'Terminación',nombre:'Masilla',qty:pasta,unit:'kg',nota:'0.15kg/m'});
-    resultadosYeso.push({cat:'Aislación',nombre:'Lana de vidrio 50mm',qty:lana,unit:'m²',nota:'Área neta +5%'});
+  resultadosYeso=[];
+  if(yeso.length){
+    resultadosYeso.push({cat:'Struttura',nome:'Montante C',qty:pMC,unit:'pz 3m',nota:`${montC} montanti · passo ${sepM*100}cm`});
+    resultadosYeso.push({cat:'Struttura',nome:'Guida U',qty:pSol,unit:'pz 3m',nota:`${(totLY*2).toFixed(1)} m lineari`});
+    resultadosYeso.push({cat:'Lastre',nome:'Lastra cartongesso 1.2×2.6m',qty:placas,unit:'lastre',nota:`${totBY.toFixed(2)} m² · ${caras} faccia/e +10%`});
+    resultadosYeso.push({cat:'Fissaggi',nome:'Vite lastra-montante',qty:tornPF,unit:'u',nota:'25u/m²'});
+    resultadosYeso.push({cat:'Fissaggi',nome:'Vite montante-guida',qty:tornMS,unit:'u',nota:'4u/montante × 2 guide'});
+    resultadosYeso.push({cat:'Finitura',nome:'Nastro carta giunti',qty:cinta,unit:'m',nota:'Giunti V+O +5%'});
+    resultadosYeso.push({cat:'Finitura',nome:'Stucco rasatura',qty:pasta,unit:'kg',nota:'0.15kg/m giunto'});
+    resultadosYeso.push({cat:'Isolamento',nome:'Lana di vetro 50mm',qty:lana,unit:'m²',nota:'Superficie +5%'});
   }
 
-  // ─ SIPOREX ─
-  let totLongS=0, totBrutaS=0;
-  sip.forEach(m => { totLongS+=m.long; totBrutaS+=m.long*m.altura; });
-  resultadosSiporex = [];
-  if (sip.length) {
-    const bloques = Math.ceil(totBrutaS / (0.60 * 0.20) * 1.05);
-    const mortero = Math.ceil(totBrutaS * 8);
-    resultadosSiporex.push({cat:'Mampostería',nombre:'Bloque Siporex 60×20cm',qty:bloques,unit:'u',nota:`${totBrutaS.toFixed(2)} m² total +5%`});
-    resultadosSiporex.push({cat:'Mampostería',nombre:'Mortero adhesivo',qty:mortero,unit:'kg',nota:'~8kg/m²'});
-    resultadosSiporex.push({cat:'Terminación',nombre:'Revoque fino',qty:Math.ceil(totBrutaS*2*1.1),unit:'m²',nota:'Ambas caras +10%'});
+  // SIPOREX
+  let totLS=0,totBS=0;
+  sip.forEach(m=>{totLS+=m.long;totBS+=m.long*m.altura;});
+  resultadosSiporex=[];
+  if(sip.length){
+    resultadosSiporex.push({cat:'Muratura',nome:'Blocco Siporex 60×20cm',qty:Math.ceil(totBS/(0.60*0.20)*1.05),unit:'u',nota:`${totBS.toFixed(2)} m² +5%`});
+    resultadosSiporex.push({cat:'Muratura',nome:'Malta adesiva',qty:Math.ceil(totBS*8),unit:'kg',nota:'~8kg/m²'});
+    resultadosSiporex.push({cat:'Finitura',nome:'Intonaco civile',qty:Math.ceil(totBS*2*1.1),unit:'m²',nota:'Entrambe le facce +10%'});
   }
 
-  renderResultYeso(totLongY, totBrutaY, totNetaY, caras);
-  renderResultSiporex(totLongS, totBrutaS);
-  renderResultPuertas();
-  renderResultBano();
+  calcRiv();
+  renderResultYeso(totLY,totBY,caras);
+  renderResultSiporex(totLS,totBS);
+  renderResultPorte();
+  renderResultRiv();
   renderResultSup();
+  renderOrdine();
 }
 
-function renderResultYeso(totLong, totBruta, totNeta, caras) {
-  if (!resultadosYeso.length) { document.getElementById('tabYeso').innerHTML=`<div class="empty-res"><div>No hay tabiques de cartón yeso.</div></div>`; return; }
-  let h = `<div class="chips">`;
-  [[totLong.toFixed(2),'ML','m','chip-lime'],[totBruta.toFixed(2),'Área bruta','m²','chip-lime'],[totNeta.toFixed(2),'Área neta','m²','chip-lime'],[murosYeso.length,'Muros','u','chip-red'],[caras===2?'Doble':'Simple','Sistema','cara','chip-lime']].forEach(([v,l,u,c])=>{
+function renderResultYeso(totL,totB,caras){
+  if(!resultadosYeso.length){document.getElementById('tabYeso').innerHTML=`<div class="empty-res"><div>Nessuna parete in cartongesso.</div></div>`;return;}
+  let h=`<div class="chips">`;
+  [[totL.toFixed(2),'ML totali','m','cl'],[totB.toFixed(2),'Superficie','m²','cl'],[murosYeso.length,'Pareti','u','cr'],[caras===2?'Doppia':'Singola','Faccia','','cl']].forEach(([v,l,u,c])=>{
     h+=`<div class="chip ${c}"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;
   });
-  h += `</div>` + buildTable(resultadosYeso);
-  document.getElementById('tabYeso').innerHTML = h;
+  h+=`</div>`+buildTable(resultadosYeso);
+  document.getElementById('tabYeso').innerHTML=h;
 }
 
-function renderResultSiporex(totLong, totBruta) {
-  if (!resultadosSiporex.length) { document.getElementById('tabSiporex').innerHTML=`<div class="empty-res"><div>No hay muros Siporex.</div></div>`; return; }
-  let h = `<div class="chips">`;
-  [[totLong.toFixed(2),'ML','m','chip-blue'],[totBruta.toFixed(2),'Área','m²','chip-blue'],[murosSiporex.length,'Muros','u','chip-blue']].forEach(([v,l,u,c])=>{
+function renderResultSiporex(totL,totB){
+  if(!resultadosSiporex.length){document.getElementById('tabSiporex').innerHTML=`<div class="empty-res"><div>Nessun muro Siporex.</div></div>`;return;}
+  let h=`<div class="chips">`;
+  [[totL.toFixed(2),'ML totali','m','cb'],[totB.toFixed(2),'Superficie','m²','cb'],[murosSiporex.length,'Muri','u','cb']].forEach(([v,l,u,c])=>{
     h+=`<div class="chip ${c}"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;
   });
-  h += `</div>` + buildTable(resultadosSiporex);
-  document.getElementById('tabSiporex').innerHTML = h;
+  h+=`</div>`+buildTable(resultadosSiporex);
+  document.getElementById('tabSiporex').innerHTML=h;
 }
 
-function renderResultPuertas() {
-  const p70=puertas.p70?.cantidad||0, p80=puertas.p80?.cantidad||0, p90=puertas.p90?.cantidad||0;
-  if (!p70&&!p80&&!p90) { document.getElementById('tabPuertas').innerHTML=`<div class="empty-res"><div>No hay puertas detectadas.</div></div>`; return; }
-  let h = `<div class="puertas-grid" style="margin-bottom:18px;">
-    <div class="puerta-chip"><div class="puerta-qty">${p70}</div><div class="puerta-lbl">70×205cm<br>Interna estándar</div></div>
-    <div class="puerta-chip"><div class="puerta-qty">${p80}</div><div class="puerta-lbl">80×205cm<br>Baño</div></div>
-    <div class="puerta-chip"><div class="puerta-qty">${p90}</div><div class="puerta-lbl">90×205cm<br>Ingreso blindada</div></div>
+function renderResultPorte(){
+  const p70=puertas.p70?.cantidad||0,p80=puertas.p80?.cantidad||0,p90=puertas.p90?.cantidad||0;
+  if(!p70&&!p80&&!p90){document.getElementById('tabPorte').innerHTML=`<div class="empty-res"><div>Nessuna porta rilevata.</div></div>`;return;}
+  let h=`<div class="puertas-grid" style="margin-bottom:16px;">
+    <div class="puerta-chip"><div class="puerta-qty">${p70}</div><div class="puerta-lbl">70×205cm<br>Interna standard</div></div>
+    <div class="puerta-chip"><div class="puerta-qty">${p80}</div><div class="puerta-lbl">80×205cm<br>Bagno</div></div>
+    <div class="puerta-chip"><div class="puerta-qty">${p90}</div><div class="puerta-lbl">90×205cm<br>Ingresso blindata</div></div>
   </div>`;
-  const rows = [];
-  if (p70) rows.push({cat:'Puertas',nombre:'Puerta interna 70×205cm',qty:p70,unit:'u',nota:'Marco + hoja incluidos'});
-  if (p80) rows.push({cat:'Puertas',nombre:'Puerta baño 80×205cm',qty:p80,unit:'u',nota:'Marco + hoja incluidos'});
-  if (p90) rows.push({cat:'Puertas',nombre:'Puerta ingreso blindada 90×205cm',qty:p90,unit:'u',nota:'Con cerradura de seguridad'});
-  h += buildTable(rows);
-  document.getElementById('tabPuertas').innerHTML = h;
+  const rows=[];
+  if(p70)rows.push({cat:'Porte',nome:'Porta interna 70×205cm',qty:p70,unit:'u',nota:'Stipite + anta inclusi'});
+  if(p80)rows.push({cat:'Porte',nome:'Porta bagno 80×205cm',qty:p80,unit:'u',nota:'Stipite + anta inclusi'});
+  if(p90)rows.push({cat:'Porte',nome:'Porta ingresso blindata 90×205cm',qty:p90,unit:'u',nota:'Con serratura di sicurezza'});
+  h+=buildTable(rows);
+  document.getElementById('tabPorte').innerHTML=h;
 }
 
-function renderResultBano() {
-  if (!banoData || !banoData.encontrado) { document.getElementById('tabBano').innerHTML=`<div class="empty-res"><div>No se detectó baño en el plano.</div></div>`; return; }
-  const b = banoData, d = b.ducha;
-  let h = `<div class="bano-card" style="margin-bottom:16px;">
-    <div class="bano-title">🚿 Revestimiento</div>
-    <div class="bano-row"><span class="bano-lbl">Perímetro baño</span><span class="bano-val">${b.perimetro_m} m</span></div>
-    <div class="bano-row"><span class="bano-lbl">Área revestimiento baño (×1.5m)</span><span class="bano-val">${b.area_revestimiento_bano_m2} m²</span></div>
-    ${d?.encontrada?`
-    <div class="bano-row"><span class="bano-lbl">Ducha ${d.dim_1_m}×${d.dim_2_m}m · per. útil</span><span class="bano-val">${d.perimetro_util_m} m</span></div>
-    <div class="bano-row"><span class="bano-lbl">Área revestimiento ducha (×2.1m)</span><span class="bano-val">${d.area_revestimiento_ducha_m2} m²</span></div>`:''}
-    <div class="bano-row"><span class="bano-lbl" style="color:var(--teal);font-weight:500;">Total azulejos 30×45cm (+10%)</span><span class="bano-val" style="font-size:18px;">${b.total_azulejos_30x45} u</span></div>
-  </div>`;
-  const rows = [
-    {cat:'Revestimiento',nombre:'Azulejo 30×45cm',qty:b.total_azulejos_30x45,unit:'u',nota:'Baño + ducha · +10% merma'},
-    {cat:'Revestimiento',nombre:'Adhesivo cerámico',qty:Math.ceil((b.area_revestimiento_bano_m2+(d?.area_revestimiento_ducha_m2||0))*5),unit:'kg',nota:'~5kg/m²'},
-    {cat:'Revestimiento',nombre:'Junta / fragüe',qty:Math.ceil((b.area_revestimiento_bano_m2+(d?.area_revestimiento_ducha_m2||0))*0.5),unit:'kg',nota:'~0.5kg/m²'},
+function renderResultRiv(){
+  if(!rivData){document.getElementById('tabRiv').innerHTML=`<div class="empty-res"><div>Inserisci le dimensioni del bagno nel pannello sinistro.</div></div>`;return;}
+  const r=rivData;
+  let h=`<div class="chips">`;
+  [[r.perBagno.toFixed(2),'Perimetro bagno','m','ct'],[r.areaParete.toFixed(2),'Riv. parete','m²','ct'],[r.areaDoccia.toFixed(2),'Riv. doccia','m²','ct'],[(r.pavBagno+r.pavDoccia).toFixed(2),'Pavimento','m²','ct'],[r.totPiastrelle,'Tot. piastrelle','u','cl']].forEach(([v,l,u,c])=>{
+    h+=`<div class="chip ${c}"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;
+  });
+  h+=`</div>`;
+  const rows=[
+    {cat:'Parete bagno ×1.5m',nome:'Piastrella 30×45cm parete bagno',qty:r.piastrelleParete,unit:'u',nota:`${r.areaParete.toFixed(2)} m² +10%`},
+    {cat:'Parete doccia ×2.1m',nome:'Piastrella 30×45cm parete doccia',qty:r.piastrelleDoccia,unit:'u',nota:`${r.areaDoccia.toFixed(2)} m² +10%`},
+    {cat:'Pavimento',nome:'Piastrella 30×45cm pavimento bagno',qty:r.piastrellesPavBagno,unit:'u',nota:`${r.pavBagno.toFixed(2)} m² +10%`},
+    {cat:'Pavimento',nome:'Piastrella 30×45cm pavimento doccia',qty:r.piastrellesPavDoccia,unit:'u',nota:`${r.pavDoccia.toFixed(2)} m² +10%`},
+    {cat:'Materiali posa',nome:'Colla ceramica',qty:Math.ceil(r.totArea*5),unit:'kg',nota:'~5kg/m²'},
+    {cat:'Materiali posa',nome:'Fugante',qty:Math.ceil(r.totArea*0.5),unit:'kg',nota:'~0.5kg/m²'},
   ];
-  h += buildTable(rows);
-  document.getElementById('tabBano').innerHTML = h;
+  h+=buildTable(rows);
+  document.getElementById('tabRiv').innerHTML=h;
 }
 
-function renderResultSup() {
-  if (!superfici.length) { document.getElementById('tabSup').innerHTML=`<div class="empty-res"><div>Agregá superficies en el panel izquierdo.</div></div>`; return; }
-  const interno = superfici.filter(s=>s.cat==='interno');
-  const bagno = superfici.filter(s=>s.cat==='bagno');
-  const esterno = superfici.filter(s=>s.cat==='esterno');
-  const sumI = interno.reduce((a,s)=>a+s.m2,0);
-  const sumB = bagno.reduce((a,s)=>a+s.m2,0);
-  const sumE = esterno.reduce((a,s)=>a+s.m2,0);
-  const tot = sumI+sumB+sumE;
-
-  let h = `<div class="sup-summary">
-    <div class="sup-block sup-block-i"><div class="sup-block-lbl">Interno</div><div class="sup-block-val">${sumI.toFixed(2)}</div><div class="sup-block-unit">m²</div>
-      <div class="sup-block-list">${interno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
-    <div class="sup-block sup-block-b"><div class="sup-block-lbl">Bagno</div><div class="sup-block-val">${sumB.toFixed(2)}</div><div class="sup-block-unit">m²</div>
-      <div class="sup-block-list">${bagno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
-    <div class="sup-block sup-block-e"><div class="sup-block-lbl">Esterno</div><div class="sup-block-val">${sumE.toFixed(2)}</div><div class="sup-block-unit">m²</div>
-      <div class="sup-block-list">${esterno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
+function renderResultSup(){
+  if(!ambientes.length){document.getElementById('tabSup').innerHTML=`<div class="empty-res"><div>L'IA non ha rilevato superfici. Verifica che la planimetria abbia nome e m² per ogni ambiente.</div></div>`;return;}
+  const interni=ambientes.filter(a=>(a.categoria||'interno')==='interno');
+  const bagni=ambientes.filter(a=>a.categoria==='bagno');
+  const esterni=ambientes.filter(a=>a.categoria==='esterno');
+  const sumI=interni.reduce((s,a)=>s+parseFloat(a.mq||0),0);
+  const sumB=bagni.reduce((s,a)=>s+parseFloat(a.mq||0),0);
+  const sumE=esterni.reduce((s,a)=>s+parseFloat(a.mq||0),0);
+  const tot=sumI+sumB+sumE;
+  let h=`<div class="sup-summary">
+    <div class="sup-block sbi"><div class="sbl">Interno</div><div class="sbv">${sumI.toFixed(2)}</div><div class="sbu">m²</div>
+      <div class="sbl-list">${interni.map(a=>`<div class="sbl-item"><span>${a.nome}</span><span>${a.mq}m²</span></div>`).join('')}</div></div>
+    <div class="sup-block sbb"><div class="sbl">Bagno</div><div class="sbv">${sumB.toFixed(2)}</div><div class="sbu">m²</div>
+      <div class="sbl-list">${bagni.map(a=>`<div class="sbl-item"><span>${a.nome}</span><span>${a.mq}m²</span></div>`).join('')}</div></div>
+    <div class="sup-block sbe"><div class="sbl">Esterno</div><div class="sbv">${sumE.toFixed(2)}</div><div class="sbu">m²</div>
+      <div class="sbl-list">${esterni.map(a=>`<div class="sbl-item"><span>${a.nome}</span><span>${a.mq}m²</span></div>`).join('')}</div></div>
   </div>
   <div class="chips">
-    <div class="chip chip-lime"><div class="chip-lbl">Total</div><div class="chip-val">${tot.toFixed(2)}</div><div class="chip-unit">m²</div></div>
-    <div class="chip chip-lime"><div class="chip-lbl">Ambientes</div><div class="chip-val">${superfici.length}</div><div class="chip-unit">u</div></div>
+    <div class="chip cl"><div class="chip-lbl">Totale calpestabile</div><div class="chip-val">${tot.toFixed(2)}</div><div class="chip-unit">m²</div></div>
+    <div class="chip cl"><div class="chip-lbl">Ambienti</div><div class="chip-val">${ambientes.length}</div><div class="chip-unit">u</div></div>
   </div>`;
-  document.getElementById('tabSup').innerHTML = h;
+  document.getElementById('tabSup').innerHTML=h;
 }
 
-function buildTable(rows) {
-  if (!rows.length) return '';
-  let h = `<table class="res-table"><thead><tr><th>Material</th><th>Cantidad</th><th>Unidad</th><th>Nota</th></tr></thead><tbody>`;
-  const cats = [...new Set(rows.map(r=>r.cat))];
-  cats.forEach(cat => {
-    h += `<tr class="cat-row"><td colspan="4">${cat}</td></tr>`;
+function renderOrdine(){
+  const proy=document.getElementById('proyNombre').value||'—';
+  const cliente=document.getElementById('cliente').value||'—';
+  const data=document.getElementById('dataDoc').value||'—';
+  const ref=document.getElementById('refDoc').value||'—';
+
+  const tutti=[
+    ...resultadosYeso.map(r=>({...r,sez:'Cartongesso'})),
+    ...resultadosSiporex.map(r=>({...r,sez:'Siporex'})),
+  ];
+  if(puertas.p70?.cantidad>0)tutti.push({sez:'Porte',cat:'Porte',nome:'Porta interna 70×205cm',qty:puertas.p70.cantidad,unit:'u',nota:''});
+  if(puertas.p80?.cantidad>0)tutti.push({sez:'Porte',cat:'Porte',nome:'Porta bagno 80×205cm',qty:puertas.p80.cantidad,unit:'u',nota:''});
+  if(puertas.p90?.cantidad>0)tutti.push({sez:'Porte',cat:'Porte',nome:'Porta ingresso blindata 90×205cm',qty:puertas.p90.cantidad,unit:'u',nota:''});
+  if(rivData){
+    tutti.push({sez:'Rivestimento',cat:'Piastrelle',nome:'Piastrella 30×45cm parete bagno',qty:rivData.piastrelleParete,unit:'u',nota:''});
+    tutti.push({sez:'Rivestimento',cat:'Piastrelle',nome:'Piastrella 30×45cm parete doccia',qty:rivData.piastrelleDoccia,unit:'u',nota:''});
+    tutti.push({sez:'Rivestimento',cat:'Pavimento',nome:'Piastrella 30×45cm pavimento bagno',qty:rivData.piastrellesPavBagno,unit:'u',nota:''});
+    tutti.push({sez:'Rivestimento',cat:'Pavimento',nome:'Piastrella 30×45cm pavimento doccia',qty:rivData.piastrellesPavDoccia,unit:'u',nota:''});
+    tutti.push({sez:'Rivestimento',cat:'Posa',nome:'Colla ceramica',qty:Math.ceil(rivData.totArea*5),unit:'kg',nota:''});
+    tutti.push({sez:'Rivestimento',cat:'Posa',nome:'Fugante',qty:Math.ceil(rivData.totArea*0.5),unit:'kg',nota:''});
+  }
+
+  if(!tutti.length){document.getElementById('tabOrdine').innerHTML=`<div class="empty-res"><div>Calcola prima il computo.</div></div>`;return;}
+
+  let h=`<div class="ordine-header">
+    <div class="ordine-title">ORDINE D'ACQUISTO</div>
+    <div class="ordine-meta">
+      <div>Progetto: <span>${proy}</span></div><div>Rif.: <span>${ref}</span></div>
+      <div>Cliente: <span>${cliente}</span></div><div>Data: <span>${data}</span></div>
+    </div>
+  </div>`;
+
+  h+=`<table class="res-table"><thead><tr><th>Materiale</th><th>Sezione</th><th style="text-align:right">Q.tà</th><th>U.M.</th><th style="text-align:right">Prezzo unit. €</th><th style="text-align:right">Totale €</th></tr></thead><tbody>`;
+  tutti.forEach((r,idx)=>{
+    const safeId='r'+idx+'_'+r.nome.replace(/[^a-zA-Z0-9]/g,'_').substring(0,20);
+    h+=`<tr>
+      <td class="td-name">${r.nome}</td>
+      <td class="td-unit">${r.sez}</td>
+      <td class="td-qty" style="text-align:right;">${r.qty.toLocaleString('it-IT')}</td>
+      <td class="td-unit">${r.unit}</td>
+      <td class="td-price"><input class="price-input" type="number" step="0.01" min="0" placeholder="0,00" data-qty="${r.qty}" data-id="${safeId}" oninput="aggiornaRiga(this,'${safeId}')"></td>
+      <td class="td-total" id="${safeId}">—</td>
+    </tr>`;
+  });
+  h+=`<tr><td colspan="5" style="text-align:right;font-size:11px;color:var(--muted2);padding:10px 9px;font-weight:500;">TOTALE COMPLESSIVO</td><td class="td-total" style="font-size:16px;" id="totGen">—</td></tr>`;
+  h+=`</tbody></table><p style="font-size:10px;color:var(--muted);margin-top:8px;">* Inserisci i prezzi unitari per calcolare il totale. Stampa con ⎙ per l'ordine d'acquisto.</p>`;
+  document.getElementById('tabOrdine').innerHTML=h;
+}
+
+function aggiornaRiga(input,id){
+  const qty=parseFloat(input.dataset.qty)||0;
+  const price=parseFloat(input.value)||0;
+  const tot=qty*price;
+  const el=document.getElementById(id);
+  if(el)el.textContent=tot>0?'€ '+tot.toLocaleString('it-IT',{minimumFractionDigits:2}):'—';
+  let totGen=0;
+  document.querySelectorAll('.td-total[id]').forEach(el=>{
+    if(el.id==='totGen')return;
+    const v=parseFloat(el.textContent.replace('€','').replace(/\./g,'').replace(',','.').trim());
+    if(!isNaN(v))totGen+=v;
+  });
+  const tg=document.getElementById('totGen');
+  if(tg)tg.textContent=totGen>0?'€ '+totGen.toLocaleString('it-IT',{minimumFractionDigits:2}):'—';
+}
+
+function buildTable(rows){
+  if(!rows.length)return'';
+  let h=`<table class="res-table"><thead><tr><th>Materiale</th><th>Q.tà</th><th>U.M.</th><th>Note</th></tr></thead><tbody>`;
+  const cats=[...new Set(rows.map(r=>r.cat))];
+  cats.forEach(cat=>{
+    h+=`<tr class="cat-row"><td colspan="4">${cat}</td></tr>`;
     rows.filter(r=>r.cat===cat).forEach(r=>{
-      h += `<tr><td class="td-name">${r.nombre}</td><td class="td-qty">${r.qty.toLocaleString('es-AR')}</td><td class="td-unit">${r.unit}</td><td class="td-note">${r.nota}</td></tr>`;
+      h+=`<tr><td class="td-name">${r.nome}</td><td class="td-qty">${r.qty.toLocaleString('it-IT')}</td><td class="td-unit">${r.unit}</td><td class="td-note">${r.nota||''}</td></tr>`;
     });
   });
-  return h + `</tbody></table>`;
+  return h+`</tbody></table>`;
 }
 
-// ══ EXPORT CSV ══
-function exportCSV() {
-  const proy = document.getElementById('proyNombre').value || 'computo';
-  let csv = 'Sección,Categoría,Material,Cantidad,Unidad,Nota\n';
-  resultadosYeso.forEach(r => { csv+=`"Cartón yeso","${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`; });
-  resultadosSiporex.forEach(r => { csv+=`"Siporex","${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`; });
-  if (banoData?.encontrado) {
-    csv+=`"Baño","Revestimiento","Azulejo 30×45cm",${banoData.total_azulejos_30x45},"u","Total +10%"\n`;
+function exportCSV(){
+  const proy=document.getElementById('proyNombre').value||'computo';
+  let csv='Sezione,Categoria,Materiale,Quantità,U.M.,Note\n';
+  resultadosYeso.forEach(r=>{csv+=`"Cartongesso","${r.cat}","${r.nome}",${r.qty},"${r.unit}","${r.nota}"\n`;});
+  resultadosSiporex.forEach(r=>{csv+=`"Siporex","${r.cat}","${r.nome}",${r.qty},"${r.unit}","${r.nota}"\n`;});
+  if(rivData){
+    [['Piastrella 30×45cm parete bagno',rivData.piastrelleParete],['Piastrella 30×45cm parete doccia',rivData.piastrelleDoccia],
+     ['Piastrella 30×45cm pavimento bagno',rivData.piastrellesPavBagno],['Piastrella 30×45cm pavimento doccia',rivData.piastrellesPavDoccia]].forEach(([n,q])=>{
+      csv+=`"Rivestimento","Piastrelle","${n}",${q},"u",""\n`;
+    });
   }
-  const p70=puertas.p70?.cantidad||0, p80=puertas.p80?.cantidad||0, p90=puertas.p90?.cantidad||0;
-  if (p70) csv+=`"Puertas","Puertas","Puerta 70×205cm",${p70},"u","Interna"\n`;
-  if (p80) csv+=`"Puertas","Puertas","Puerta 80×205cm",${p80},"u","Baño"\n`;
-  if (p90) csv+=`"Puertas","Puertas","Puerta 90×205cm",${p90},"u","Ingreso blindada"\n`;
-  superfici.forEach(s => { csv+=`"Superfici","${s.cat}","${s.nombre}",${s.m2},"m²",""\n`; });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = `${proy.replace(/\s+/g,'_')}_computo_integral.csv`;
+  const p70=puertas.p70?.cantidad||0,p80=puertas.p80?.cantidad||0,p90=puertas.p90?.cantidad||0;
+  if(p70)csv+=`"Porte","Porte","Porta interna 70×205cm",${p70},"u",""\n`;
+  if(p80)csv+=`"Porte","Porte","Porta bagno 80×205cm",${p80},"u",""\n`;
+  if(p90)csv+=`"Porte","Porte","Porta ingresso blindata 90×205cm",${p90},"u",""\n`;
+  ambientes.forEach(a=>{csv+=`"Superfici","${a.categoria||'interno'}","${a.nome}",${a.mq},"m²",""\n`;});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`${proy.replace(/\s+/g,'_')}_computo.csv`;
   a.click();
 }
+
+document.getElementById('dataDoc').value=new Date().toLocaleDateString('it-IT');
 </script>
 </body>
 </html>
