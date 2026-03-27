@@ -3,277 +3,356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CÓMPUTO MÉTRICO · Vision AI</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<title>CÓMPUTO INTEGRAL · Vision AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0a; --surface: #141414; --surface2: #1c1c1c;
-  --border: #272727; --border2: #333;
-  --lime: #d4f54e; --lime-dim: #a8c43d; --lime-glow: rgba(212,245,78,0.08);
-  --text: #e4e4e4; --muted: #555; --muted2: #777; --danger: #ff4e4e;
+  --bg:#0a0a0a; --s1:#141414; --s2:#1c1c1c; --s3:#242424;
+  --b1:#272727; --b2:#333; --b3:#444;
+  --lime:#d4f54e; --lime-d:#a8c43d; --lime-g:rgba(212,245,78,0.07);
+  --red:#ff5555; --red-g:rgba(255,85,85,0.08);
+  --blue:#4e9fff; --blue-g:rgba(78,159,255,0.08);
+  --yellow:#ffd84e; --yellow-g:rgba(255,216,78,0.08);
+  --teal:#4ef5d4; --teal-g:rgba(78,245,212,0.08);
+  --text:#e4e4e4; --muted:#555; --muted2:#777; --danger:#ff4e4e;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; min-height: 100vh; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;min-height:100vh;}
 
-header {
-  padding: 16px 32px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; background: var(--bg); z-index: 50;
-}
-.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--lime); }
-.logo span { color: var(--muted); font-weight: 400; font-size: 12px; font-family: 'DM Mono', monospace; margin-left: 6px; }
-.ai-badge { font-size: 10px; color: var(--lime); background: var(--lime-glow); border: 1px solid rgba(212,245,78,0.2); border-radius: 2px; padding: 3px 10px; letter-spacing: 0.12em; }
+header{padding:14px 28px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:50;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--lime);}
+.logo span{color:var(--muted);font-weight:400;font-size:11px;font-family:'DM Mono',monospace;margin-left:6px;}
+.badges{display:flex;gap:6px;}
+.badge{font-size:9px;letter-spacing:0.12em;padding:3px 8px;border-radius:2px;border:1px solid;}
+.badge-r{color:var(--red);border-color:rgba(255,85,85,0.3);background:var(--red-g);}
+.badge-b{color:var(--blue);border-color:rgba(78,159,255,0.3);background:var(--blue-g);}
+.badge-y{color:var(--yellow);border-color:rgba(255,216,78,0.3);background:var(--yellow-g);}
+.badge-t{color:var(--teal);border-color:rgba(78,245,212,0.3);background:var(--teal-g);}
 
-.app { display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 53px); }
+.app{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 49px);}
 
-.sidebar { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
-.sec { padding: 16px 20px; border-bottom: 1px solid var(--border); }
-.sec-title { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+/* SIDEBAR */
+.sidebar{border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow-y:auto;}
+.sec{padding:14px 18px;border-bottom:1px solid var(--b1);}
+.sec-t{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
 
-.field { margin-bottom: 10px; }
-.lbl { font-size: 10px; color: var(--muted2); display: block; margin-bottom: 4px; letter-spacing: 0.04em; }
+.field{margin-bottom:8px;}
+.lbl{font-size:10px;color:var(--muted2);display:block;margin-bottom:3px;}
+input[type="text"],input[type="number"],select,textarea{width:100%;background:var(--s1);border:1px solid var(--b1);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:7px 10px;border-radius:4px;outline:none;transition:border-color 0.15s;appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--lime);}
+input[type="number"]{-moz-appearance:textfield;}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;}
+textarea{resize:none;font-size:11px;line-height:1.6;color:var(--muted2);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
 
-input[type="text"], input[type="number"], select, textarea {
-  width: 100%; background: var(--surface); border: 1px solid var(--border);
-  color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px;
-  padding: 8px 11px; border-radius: 4px; outline: none; transition: border-color 0.15s; appearance: none;
-}
-input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus { border-color: var(--lime); }
-input[type="number"] { -moz-appearance: textfield; }
-input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-textarea { resize: none; font-size: 11px; line-height: 1.6; color: var(--muted2); }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.upload-zone{border:1px dashed var(--b2);border-radius:5px;padding:18px 12px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;background:var(--s1);}
+.upload-zone:hover{border-color:var(--lime);background:var(--lime-g);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.upload-text{font-size:11px;color:var(--muted2);line-height:1.7;}
+.upload-text strong{color:var(--lime);}
+.preview-img{width:100%;border-radius:4px;border:1px solid var(--b1);display:block;max-height:160px;object-fit:cover;}
+.preview-remove{position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.75);border:none;color:var(--text);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:11px;}
 
-.tog-row { display: flex; gap: 6px; }
-.tog { background: var(--surface); border: 1px solid var(--border); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 5px 12px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
-.tog.on { background: var(--lime); border-color: var(--lime); color: #000; font-weight: 500; }
+/* Superfici */
+.sup-list{display:flex;flex-direction:column;gap:5px;}
+.sup-item{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:7px 10px;display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;}
+.sup-cat{font-size:9px;padding:2px 7px;border-radius:2px;font-weight:500;}
+.sup-cat-i{background:var(--lime-g);color:var(--lime);border:1px solid rgba(212,245,78,0.2);}
+.sup-cat-b{background:var(--teal-g);color:var(--teal);border:1px solid rgba(78,245,212,0.2);}
+.sup-cat-e{background:var(--blue-g);color:var(--blue);border:1px solid rgba(78,159,255,0.2);}
+.sup-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:1px 5px;}
+.sup-del:hover{color:var(--danger);}
 
-.chk-item { display: flex; align-items: center; gap: 8px; font-size: 11px; cursor: pointer; margin-bottom: 6px; color: var(--text); }
-.chk-item input { accent-color: var(--lime); width: 13px; height: 13px; }
+/* Buttons */
+.btn-lime{width:100%;background:var(--lime);border:none;color:#000;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:11px;border-radius:4px;cursor:pointer;transition:background 0.12s;}
+.btn-lime:hover{background:var(--lime-d);}
+.btn-lime:disabled{background:var(--s2);color:var(--muted);cursor:not-allowed;border:1px solid var(--b1);}
+.btn-ghost{width:100%;background:transparent;border:1px dashed var(--b2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:8px;border-radius:4px;cursor:pointer;transition:all 0.15s;margin-top:5px;letter-spacing:0.08em;}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime);}
+.btn-outline-lime{width:100%;background:transparent;border:1px solid var(--lime);color:var(--lime);font-family:'Syne',sans-serif;font-weight:600;font-size:13px;padding:10px;border-radius:4px;cursor:pointer;transition:all 0.12s;margin-top:5px;}
+.btn-outline-lime:hover{background:var(--lime-g);}
+.btn-sm{background:var(--s2);border:1px solid var(--b1);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
+.btn-sm:hover{border-color:var(--lime);color:var(--lime);}
 
-.upload-zone { border: 1px dashed var(--border2); border-radius: 5px; padding: 22px 14px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; background: var(--surface); }
-.upload-zone:hover { border-color: var(--lime); background: var(--lime-glow); }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-.upload-text { font-size: 11px; color: var(--muted2); line-height: 1.7; }
-.upload-text strong { color: var(--lime); font-size: 12px; }
+/* MAIN */
+.main{display:flex;flex-direction:column;overflow:hidden;}
 
-.preview-img { width: 100%; border-radius: 4px; border: 1px solid var(--border); display: block; max-height: 180px; object-fit: cover; }
-.preview-remove { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.75); border: none; color: var(--text); border-radius: 3px; padding: 2px 8px; cursor: pointer; font-size: 12px; }
+/* AI Panel */
+.ai-panel{padding:16px 22px;border-bottom:1px solid var(--b1);}
+.ai-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ai-title{font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.dot.pulse{background:var(--lime);animation:dp 1.5s infinite;}
+.dot.done{background:var(--lime);}
+@keyframes dp{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.ai-stxt{font-size:10px;color:var(--muted);letter-spacing:0.08em;}
 
-.muro-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 9px 12px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
-.muro-name { font-size: 12px; font-weight: 500; color: var(--lime); margin-bottom: 2px; }
-.muro-info { font-size: 10px; color: var(--muted2); line-height: 1.6; }
-.muro-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 3px; transition: color 0.1s; }
-.muro-del:hover { color: var(--danger); }
+.state-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:7px;text-align:center;}
+.state-empty p{font-size:11px;color:var(--muted2);line-height:1.7;}
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;padding:24px;gap:10px;}
+.spinner{width:20px;height:20px;border:2px solid var(--b2);border-top-color:var(--lime);border-radius:50%;animation:spin 0.75s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner-msg{font-size:11px;color:var(--muted2);font-style:italic;}
 
-.btn-primary { width: 100%; background: var(--lime); border: none; color: #000; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; padding: 12px; border-radius: 4px; cursor: pointer; transition: background 0.12s; }
-.btn-primary:hover { background: var(--lime-dim); }
-.btn-primary:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; border: 1px solid var(--border); }
-.btn-outline { width: 100%; background: transparent; border: 1px dashed var(--border2); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 9px; border-radius: 4px; cursor: pointer; transition: all 0.15s; margin-top: 6px; letter-spacing: 0.08em; }
-.btn-outline:hover { border-color: var(--lime); color: var(--lime); }
-.btn-calc { width: 100%; background: transparent; border: 1px solid var(--lime); color: var(--lime); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; padding: 11px; border-radius: 4px; cursor: pointer; transition: all 0.12s; margin-top: 6px; }
-.btn-calc:hover { background: var(--lime-glow); }
-.btn-sm { background: var(--surface2); border: 1px solid var(--border); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 6px 14px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
-.btn-sm:hover { border-color: var(--lime); color: var(--lime); }
+/* Color sections */
+.color-section{margin-bottom:14px;}
+.cs-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;}
+.cs-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.cs-dot-r{background:var(--red);}
+.cs-dot-b{background:var(--blue);}
+.cs-dot-y{background:var(--yellow);}
+.cs-dot-t{background:var(--teal);}
 
-.main { display: flex; flex-direction: column; overflow: hidden; }
-.ai-panel { padding: 18px 24px; border-bottom: 1px solid var(--border); }
-.ai-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.ai-title { font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: 'Syne', sans-serif; }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
-.dot.pulse { background: var(--lime); animation: dotpulse 1.5s infinite; }
-.dot.done { background: var(--lime); }
-@keyframes dotpulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-.ai-status-txt { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
+.ai-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px;margin-bottom:8px;}
+.ai-card{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:10px;cursor:pointer;transition:border-color 0.15s;}
+.ai-card.sel-r{border-color:var(--red);background:var(--red-g);}
+.ai-card.sel-b{border-color:var(--blue);background:var(--blue-g);}
+.ai-card.sel-y{border-color:var(--yellow);background:var(--yellow-g);}
+.ai-card-top{display:flex;align-items:start;justify-content:space-between;margin-bottom:7px;}
+.ai-card-name{font-size:11px;font-weight:500;line-height:1.3;}
+.ai-card-name-r{color:var(--red);}
+.ai-card-name-b{color:var(--blue);}
+.ai-card-name-y{color:var(--yellow);}
+.ai-card-chk{accent-color:var(--lime);width:13px;height:13px;flex-shrink:0;margin-left:5px;}
+.ai-cf{margin-bottom:5px;}
+.ai-cf label{font-size:9px;color:var(--muted);display:block;margin-bottom:2px;}
+.ai-cf input{width:100%;font-size:11px;padding:4px 7px;background:var(--s2);border:1px solid var(--b1);border-radius:3px;color:var(--text);font-family:'DM Mono',monospace;outline:none;}
+.ai-cf input:focus{border-color:var(--lime);}
+.ai-note-txt{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5;font-style:italic;}
 
-.state-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; gap: 8px; text-align: center; }
-.state-empty-txt { font-size: 11px; color: var(--muted2); line-height: 1.7; }
-.spinner-wrap { display: flex; flex-direction: column; align-items: center; padding: 28px; gap: 12px; }
-.spinner { width: 22px; height: 22px; border: 2px solid var(--border2); border-top-color: var(--lime); border-radius: 50%; animation: spin 0.75s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.spinner-msg { font-size: 11px; color: var(--muted2); font-style: italic; }
+/* Baño card */
+.bano-card{background:var(--teal-g);border:1px solid rgba(78,245,212,0.2);border-radius:5px;padding:12px;margin-bottom:8px;}
+.bano-title{font-size:11px;font-weight:500;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.bano-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(78,245,212,0.1);}
+.bano-row:last-child{border-bottom:none;}
+.bano-lbl{font-size:10px;color:var(--muted2);}
+.bano-val{font-size:13px;font-weight:500;color:var(--teal);}
 
-.ai-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-bottom: 12px; }
-.ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 12px; cursor: pointer; transition: border-color 0.15s; }
-.ai-card.sel { border-color: var(--lime); background: var(--lime-glow); }
-.ai-card-top { display: flex; align-items: start; justify-content: space-between; margin-bottom: 8px; }
-.ai-card-name { font-size: 11px; font-weight: 500; color: var(--lime); line-height: 1.4; }
-.ai-card-chk { accent-color: var(--lime); width: 13px; height: 13px; flex-shrink: 0; margin-left: 6px; }
-.ai-card-field { margin-bottom: 5px; }
-.ai-card-field label { font-size: 9px; color: var(--muted); display: block; margin-bottom: 2px; letter-spacing: 0.06em; }
-.ai-card-field input { width: 100%; font-size: 12px; padding: 5px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; color: var(--text); font-family: 'DM Mono', monospace; outline: none; }
-.ai-card-field input:focus { border-color: var(--lime); }
-.ai-note { font-size: 10px; color: var(--muted); margin-top: 5px; line-height: 1.5; font-style: italic; }
-.ai-obs { grid-column: 1/-1; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; font-size: 10px; color: var(--muted2); line-height: 1.7; }
-.import-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-.btn-import { background: var(--lime); border: none; color: #000; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 7px 16px; border-radius: 3px; cursor: pointer; transition: background 0.12s; }
-.btn-import:hover { background: var(--lime-dim); }
-.btn-import-all { background: transparent; border: 1px solid var(--border2); color: var(--muted2); font-family: 'DM Mono', monospace; font-size: 10px; padding: 7px 16px; border-radius: 3px; cursor: pointer; transition: all 0.12s; }
-.btn-import-all:hover { border-color: var(--lime); color: var(--lime); }
+/* Puertas summary */
+.puertas-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px;}
+.puerta-chip{background:var(--yellow-g);border:1px solid rgba(255,216,78,0.2);border-radius:4px;padding:8px 10px;text-align:center;}
+.puerta-qty{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--yellow);line-height:1;}
+.puerta-lbl{font-size:9px;color:var(--muted);margin-top:3px;}
 
-.results-panel { flex: 1; padding: 18px 24px; overflow-y: auto; }
-.res-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.res-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; }
-.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 22px; }
-.chip { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 11px 13px; }
-.chip-lbl { font-size: 9px; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
-.chip-val { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--lime); line-height: 1; }
-.chip-unit { font-size: 10px; color: var(--muted); margin-top: 2px; }
-.res-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 24px; }
-.res-table th { text-align: left; font-size: 9px; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--border); font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
-.res-table td { padding: 9px 10px; border-bottom: 1px solid #131313; }
-.res-table tr:hover td { background: var(--surface); }
-.res-table tr.cat-row td { background: var(--surface2); font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; }
-.td-name { color: var(--text); font-size: 12px; }
-.td-qty { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--lime); }
-.td-unit { color: var(--muted); font-size: 10px; }
-.td-note { color: var(--muted); font-size: 10px; line-height: 1.5; }
-.empty-res { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; gap: 8px; color: var(--muted); font-size: 11px; text-align: center; }
-.error-box { background: rgba(255,78,78,0.07); border: 1px solid rgba(255,78,78,0.25); border-radius: 4px; padding: 12px 14px; font-size: 11px; color: #ff8080; line-height: 1.7; }
+.import-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
+.btn-import{background:var(--lime);border:none;color:#000;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:6px 14px;border-radius:3px;cursor:pointer;transition:background 0.12s;}
+.btn-import:hover{background:var(--lime-d);}
+.btn-import-all{background:transparent;border:1px solid var(--b2);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
+.btn-import-all:hover{border-color:var(--lime);color:var(--lime);}
 
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; }
-.overlay.open { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; padding: 24px; width: 380px; max-width: 94vw; }
-.modal-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--lime); margin-bottom: 16px; }
-.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
-.m-ok { flex:1; background: var(--lime); border: none; color: #000; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; padding: 10px; border-radius: 3px; cursor: pointer; }
-.m-cancel { flex:1; background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: 12px; padding: 10px; border-radius: 3px; cursor: pointer; }
+/* Results */
+.results-panel{flex:1;padding:16px 22px;overflow-y:auto;}
+.res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.res-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+
+.res-tabs{display:flex;gap:0;border-bottom:1px solid var(--b1);margin-bottom:16px;}
+.res-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding:7px 14px;cursor:pointer;margin-bottom:-1px;transition:all 0.15s;letter-spacing:0.04em;}
+.res-tab.active{color:var(--lime);border-bottom-color:var(--lime);}
+
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px;margin-bottom:18px;}
+.chip{background:var(--s1);border:1px solid var(--b1);border-radius:4px;padding:10px 12px;}
+.chip-lbl{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:0.1em;text-transform:uppercase;}
+.chip-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1;}
+.chip-unit{font-size:9px;color:var(--muted);margin-top:2px;}
+.chip-lime .chip-val{color:var(--lime);}
+.chip-red .chip-val{color:var(--red);}
+.chip-blue .chip-val{color:var(--blue);}
+.chip-yellow .chip-val{color:var(--yellow);}
+.chip-teal .chip-val{color:var(--teal);}
+
+.res-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:20px;}
+.res-table th{text-align:left;font-size:9px;color:var(--muted);padding:5px 9px;border-bottom:1px solid var(--b1);font-weight:400;letter-spacing:0.12em;text-transform:uppercase;}
+.res-table td{padding:8px 9px;border-bottom:1px solid #131313;}
+.res-table tr:hover td{background:var(--s1);}
+.res-table tr.cat-row td{background:var(--s2);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;}
+.td-name{color:var(--text);font-size:11px;}
+.td-qty{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;}
+.td-unit{color:var(--muted);font-size:10px;}
+.td-note{color:var(--muted);font-size:10px;line-height:1.5;}
+
+/* Superfici results */
+.sup-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:16px;}
+.sup-block{border-radius:5px;padding:12px;border:1px solid;}
+.sup-block-i{background:var(--lime-g);border-color:rgba(212,245,78,0.2);}
+.sup-block-b{background:var(--teal-g);border-color:rgba(78,245,212,0.2);}
+.sup-block-e{background:var(--blue-g);border-color:rgba(78,159,255,0.2);}
+.sup-block-lbl{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px;}
+.sup-block-i .sup-block-lbl{color:var(--lime);}
+.sup-block-b .sup-block-lbl{color:var(--teal);}
+.sup-block-e .sup-block-lbl{color:var(--blue);}
+.sup-block-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1;}
+.sup-block-i .sup-block-val{color:var(--lime);}
+.sup-block-b .sup-block-val{color:var(--teal);}
+.sup-block-e .sup-block-val{color:var(--blue);}
+.sup-block-unit{font-size:10px;color:var(--muted);margin-top:2px;}
+.sup-block-list{margin-top:8px;border-top:1px solid rgba(255,255,255,0.05);padding-top:7px;display:flex;flex-direction:column;gap:3px;}
+.sup-block-item{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);}
+
+.empty-res{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:140px;gap:7px;color:var(--muted);font-size:11px;text-align:center;}
+.error-box{background:rgba(255,78,78,0.07);border:1px solid rgba(255,78,78,0.25);border-radius:4px;padding:11px 13px;font-size:11px;color:#ff8080;line-height:1.7;}
+
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:22px;width:360px;max-width:94vw;}
+.modal-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--lime);margin-bottom:14px;}
+.tog-row{display:flex;gap:5px;flex-wrap:wrap;}
+.tog{background:var(--s2);border:1px solid var(--b1);color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;padding:5px 11px;border-radius:3px;cursor:pointer;transition:all 0.12s;}
+.tog.on{background:var(--lime);border-color:var(--lime);color:#000;font-weight:500;}
+.modal-actions{display:flex;gap:7px;margin-top:14px;}
+.m-ok{flex:1;background:var(--lime);border:none;color:#000;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;padding:9px;border-radius:3px;cursor:pointer;}
+.m-cancel{flex:1;background:transparent;border:1px solid var(--b1);color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;padding:9px;border-radius:3px;cursor:pointer;}
+
+.tab-content{display:none;}
+.tab-content.active{display:block;}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">CÓMPUTO<span>.métrico</span></div>
-  <div class="ai-badge">VISION AI</div>
+  <div class="logo">CÓMPUTO<span>.integral</span></div>
+  <div class="badges">
+    <div class="badge badge-r">ROJO · YESO</div>
+    <div class="badge badge-b">AZUL · SIPOREX</div>
+    <div class="badge badge-y">AMARILLO · PUERTAS</div>
+    <div class="badge badge-t">BAÑO · REVESTIMIENTO</div>
+  </div>
 </header>
 
 <div class="app">
   <div class="sidebar">
 
     <div class="sec">
-      <div class="sec-title">Proyecto</div>
-      <div class="field">
-        <label class="lbl">Nombre</label>
-        <input type="text" id="proyNombre" placeholder="Ej: Dpto 4B — Reforma 2026">
-      </div>
+      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Proyecto</div>
+      <div class="field"><label class="lbl">Nombre</label><input type="text" id="proyNombre" placeholder="Ej: Dpto 4B — Reforma 2026"></div>
     </div>
 
     <div class="sec">
-      <div class="sec-title">Plano AutoCAD</div>
+      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Plano AutoCAD</div>
       <div id="uploadZone" class="upload-zone">
         <input type="file" id="fileInput" accept="image/*">
-        <div class="upload-text"><strong>Clic o arrastrá</strong><br>Captura AutoCAD con cotas<br><span style="font-size:10px;color:var(--muted);">PNG · JPG · WEBP</span></div>
+        <div class="upload-text"><strong>Clic o arrastrá</strong><br>🔴 Rojo=Yeso · 🔵 Azul=Siporex · 🟡 Amarillo=Puertas<br><span style="font-size:10px;color:var(--muted);">PNG · JPG</span></div>
       </div>
-      <div id="previewWrap" style="display:none; margin-top:8px; position:relative;">
+      <div id="previewWrap" style="display:none;margin-top:8px;position:relative;">
         <img id="previewImg" class="preview-img" src="" alt="">
         <button class="preview-remove" onclick="removeImg()">✕</button>
       </div>
-      <div class="field" style="margin-top:10px;">
-        <label class="lbl">Contexto para la IA (opcional)</label>
-        <textarea id="aiCtx" rows="2" placeholder="Ej: Altura de muros 2.60m. Ignorar exteriores."></textarea>
+      <div class="field" style="margin-top:9px;">
+        <label class="lbl">Contexto adicional (opcional)</label>
+        <textarea id="aiCtx" rows="2" placeholder="Ej: Hay 2 baños. La ducha del baño principal mide 80×120."></textarea>
       </div>
-      <button class="btn-primary" id="btnAnalyze" onclick="analizarPlano()" disabled>⬡ Analizar con Vision AI</button>
+      <button class="btn-lime" id="btnAnalyze" onclick="analizarPlano()" disabled style="margin-top:8px;">⬡ Analizar con Vision AI</button>
     </div>
 
     <div class="sec">
-      <div class="sec-title">Configuración</div>
+      <div class="sec-t"><div class="sec-dot" style="background:var(--lime)"></div>Configuración tabiques</div>
       <div class="field">
-        <label class="lbl">Sistema</label>
+        <label class="lbl">Sistema cartón yeso</label>
         <div class="tog-row" id="togSist">
-          <button class="tog on" data-v="simple">Simple cara</button>
+          <button class="tog on" data-v="simple">Simple</button>
           <button class="tog" data-v="doble">Doble cara</button>
         </div>
       </div>
       <div class="row2 field">
         <div><label class="lbl">Sep. montantes</label>
-          <select id="sepM"><option value="0.4">400 mm</option><option value="0.6" selected>600 mm</option></select>
+          <select id="sepM"><option value="0.4">400mm</option><option value="0.6" selected>600mm</option></select>
         </div>
         <div><label class="lbl">Alto placa (m)</label><input type="number" id="pAlto" value="2.6" step="0.1"></div>
-      </div>
-      <div class="field">
-        <label class="lbl">Incluir en cómputo</label>
-        <label class="chk-item"><input type="checkbox" id="chkMont" checked> Montantes C + Soleras U</label>
-        <label class="chk-item"><input type="checkbox" id="chkPlac" checked> Placas de yeso (1.2×2.6m)</label>
-        <label class="chk-item"><input type="checkbox" id="chkTorn" checked> Tornillos</label>
-        <label class="chk-item"><input type="checkbox" id="chkCint" checked> Cinta + Masilla</label>
-        <label class="chk-item"><input type="checkbox" id="chkLana" checked> Lana de vidrio 50mm</label>
       </div>
     </div>
 
     <div class="sec" style="flex:1;">
-      <div class="sec-title">Muros cargados</div>
-      <div id="muroList"><p style="font-size:11px;color:var(--muted);">Sin muros. Analizá un plano o agregá manualmente.</p></div>
-      <button class="btn-outline" onclick="openModal()">+ AGREGAR MURO MANUAL</button>
+      <div class="sec-t"><div class="sec-dot" style="background:var(--teal)"></div>Superfici calpestabili</div>
+      <div id="supList" class="sup-list"><p style="font-size:11px;color:var(--muted);">Sin superficies cargadas.</p></div>
+      <button class="btn-ghost" onclick="openSupModal()">+ AGREGAR SUPERFICIE</button>
     </div>
 
-    <div style="padding:14px 20px; border-top:1px solid var(--border);">
-      <button class="btn-calc" onclick="calcular()">▶ CALCULAR CÓMPUTO</button>
+    <div style="padding:12px 18px;border-top:1px solid var(--b1);">
+      <button class="btn-outline-lime" onclick="calcular()">▶ CALCULAR CÓMPUTO</button>
     </div>
 
   </div>
 
   <div class="main">
     <div class="ai-panel">
-      <div class="ai-header">
+      <div class="ai-hdr">
         <div class="ai-title"><div class="dot" id="statusDot"></div>Lectura de plano</div>
-        <div class="ai-status-txt" id="aiStatusTxt">ESPERANDO IMAGEN</div>
+        <div class="ai-stxt" id="aiStxt">ESPERANDO IMAGEN</div>
       </div>
       <div id="aiContent">
         <div class="state-empty">
-          <div class="state-empty-txt">Subí una captura de AutoCAD con cotas visibles.<br>La IA identificará los muros y sus dimensiones automáticamente.</div>
+          <p>Subí una captura de AutoCAD con el código de colores.<br>La IA identificará todos los elementos automáticamente.</p>
         </div>
       </div>
     </div>
 
     <div class="results-panel">
-      <div class="res-header">
+      <div class="res-hdr">
         <div class="res-title">Cómputo</div>
-        <button class="btn-sm" onclick="exportCSV()">↓ Exportar CSV</button>
+        <button class="btn-sm" onclick="exportCSV()">↓ CSV</button>
       </div>
-      <div id="resultsArea">
-        <div class="empty-res"><div>Cargá muros y presioná "Calcular cómputo".</div></div>
+      <div class="res-tabs">
+        <button class="res-tab active" onclick="showTab('tabYeso')">Cartón yeso</button>
+        <button class="res-tab" onclick="showTab('tabSiporex')">Siporex</button>
+        <button class="res-tab" onclick="showTab('tabPuertas')">Puertas</button>
+        <button class="res-tab" onclick="showTab('tabBano')">Baño</button>
+        <button class="res-tab" onclick="showTab('tabSup')">Superfici</button>
       </div>
+      <div id="tabYeso" class="tab-content active"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
+      <div id="tabSiporex" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
+      <div id="tabPuertas" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
+      <div id="tabBano" class="tab-content"><div class="empty-res"><div>Calculá para ver el cómputo.</div></div></div>
+      <div id="tabSup" class="tab-content"><div class="empty-res"><div>Agregá superficies y calculá.</div></div></div>
     </div>
   </div>
 </div>
 
-<div class="overlay" id="overlay">
+<!-- Modal superficie -->
+<div class="overlay" id="supOverlay">
   <div class="modal">
-    <div class="modal-title">+ Muro manual</div>
-    <div class="field"><label class="lbl">Nombre / referencia</label><input type="text" id="mNom" placeholder="Ej: Tabique sala-comedor"></div>
-    <div class="row2 field">
-      <div><label class="lbl">Longitud (m)</label><input type="number" id="mLong" step="0.1" placeholder="0.00"></div>
-      <div><label class="lbl">Altura (m)</label><input type="number" id="mAlt" value="2.60" step="0.05"></div>
-    </div>
-    <div class="field"><label class="lbl">Aberturas</label>
-      <div class="row3">
-        <div><label class="lbl">Cant.</label><input type="number" id="mAbN" value="0" min="0"></div>
-        <div><label class="lbl">Ancho (m)</label><input type="number" id="mAbW" value="0.90" step="0.05"></div>
-        <div><label class="lbl">Alto (m)</label><input type="number" id="mAbH" value="2.05" step="0.05"></div>
+    <div class="modal-title">+ Superficie calpestabile</div>
+    <div class="field"><label class="lbl">Ambiente</label><input type="text" id="supNombre" placeholder="Ej: Soggiorno, Camera, Bagno principale"></div>
+    <div class="field"><label class="lbl">Superficie (m²)</label><input type="number" id="supM2" step="0.1" placeholder="0.00"></div>
+    <div class="field"><label class="lbl">Categoría</label>
+      <div class="tog-row" id="togCat">
+        <button class="tog on" data-v="interno">Interno</button>
+        <button class="tog" data-v="bagno">Bagno</button>
+        <button class="tog" data-v="esterno">Esterno</button>
       </div>
     </div>
     <div class="modal-actions">
-      <button class="m-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="m-ok" onclick="addMuroManual()">Agregar</button>
+      <button class="m-cancel" onclick="closeSupModal()">Cancelar</button>
+      <button class="m-ok" onclick="addSup()">Agregar</button>
     </div>
   </div>
 </div>
 
 <script>
-let muros = [], sistemaVal = 'simple', imgBase64 = null, imgMediaType = 'image/jpeg';
-let aiDetected = [], resultados = [], loadingInterval = null;
+// ══ STATE ══
+let murosYeso = [], murosSiporex = [], puertas = {p70:0,p80:0,p90:0};
+let banoData = null, superfici = [], sistemaVal = 'simple';
+let imgBase64 = null, imgMediaType = 'image/jpeg';
+let aiResult = null, resultadosYeso = [], resultadosSiporex = [];
+let catVal = 'interno';
 
-// ── TOGGLES ──
+// ══ TABS ══
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══ TOGGLES ══
 document.querySelectorAll('#togSist .tog').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('#togSist .tog').forEach(x => x.classList.remove('on'));
-    b.classList.add('on'); sistemaVal = b.dataset.v;
-  });
+  b.addEventListener('click', () => { document.querySelectorAll('#togSist .tog').forEach(x => x.classList.remove('on')); b.classList.add('on'); sistemaVal = b.dataset.v; });
+});
+document.querySelectorAll('#togCat .tog').forEach(b => {
+  b.addEventListener('click', () => { document.querySelectorAll('#togCat .tog').forEach(x => x.classList.remove('on')); b.classList.add('on'); catVal = b.dataset.v; });
 });
 
-// ── FILE UPLOAD ──
+// ══ FILE UPLOAD ══
 const fileInput = document.getElementById('fileInput');
 const uploadZone = document.getElementById('uploadZone');
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
@@ -302,40 +381,26 @@ function removeImg() {
   fileInput.value = ''; setAIState('idle');
 }
 
-// ── AI STATE ──
+// ══ AI STATE ══
 function setAIState(s) {
   const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('aiStatusTxt');
+  const txt = document.getElementById('aiStxt');
   dot.className = 'dot' + (s==='loading'?' pulse':s==='done'?' done':'');
   txt.textContent = {idle:'ESPERANDO IMAGEN',loading:'ANALIZANDO…',done:'LECTURA COMPLETA',error:'ERROR'}[s]||'';
   txt.style.color = s==='done'?'var(--lime)':s==='error'?'var(--danger)':'var(--muted)';
 }
 
-// ── ANALYZE ──
+// ══ ANALYZE ══
 async function analizarPlano() {
   if (!imgBase64) return;
   setAIState('loading');
-  const phrases = ['Analizando plano…','Identificando muros…','Leyendo cotas…','Procesando aberturas…'];
+  const phrases = ['Detectando colores…','Leyendo tabiques rojos…','Leyendo muros azules…','Analizando puertas…','Calculando revestimiento baño…'];
   let pi = 0;
   const cont = document.getElementById('aiContent');
   cont.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><div class="spinner-msg" id="loadMsg">${phrases[0]}</div></div>`;
-  loadingInterval = setInterval(() => { pi=(pi+1)%phrases.length; const el=document.getElementById('loadMsg'); if(el) el.textContent=phrases[pi]; }, 1800);
+  const interval = setInterval(() => { pi=(pi+1)%phrases.length; const el=document.getElementById('loadMsg'); if(el) el.textContent=phrases[pi]; }, 2000);
 
   const ctx = document.getElementById('aiCtx').value.trim();
-  const systemPrompt = `Sos un experto en cómputo métrico de tabiquería seca de cartón yeso (Durlock/Knauf). Analizás planos de AutoCAD con cotas numéricas visibles.
-
-Identificá todos los muros o tabiques interiores y extraé sus dimensiones exactas de las cotas del plano.
-
-Respondé ÚNICAMENTE con JSON válido. Sin texto adicional. Sin markdown. Sin backticks:
-
-{"muros":[{"nombre":"string descriptivo","longitud_m":number,"altura_m":number,"aberturas":[{"tipo":"puerta o ventana","ancho_m":number,"alto_m":number}],"nota":"ubicación breve"}],"observaciones":"notas generales"}
-
-Reglas:
-- Si no ves la altura en el plano, usá 2.60m por defecto
-- Si no hay aberturas, devolvé "aberturas":[]
-- Nombres descriptivos (ej: "Tabique dormitorio principal")
-- Solo muros interiores de tabiquería seca, no estructurales ni exteriores
-- Usá los valores EXACTOS de las cotas visibles. Si están en cm, convertí a metros${ctx?`\n- Contexto del usuario: ${ctx}`:''}`;
 
   try {
     const res = await fetch('/.netlify/functions/proxy', {
@@ -343,146 +408,346 @@ Reglas:
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
-        system: systemPrompt,
+        max_tokens: 2000,
         messages: [{
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: imgMediaType, data: imgBase64 } },
-            { type: 'text', text: 'Analizá este plano de AutoCAD e identificá todos los muros de tabiquería seca con sus dimensiones exactas.' }
+            { type: 'text', text: `Analizá este plano de AutoCAD siguiendo el código de colores indicado. Sé exhaustivo con cada color.${ctx ? `\n\nContexto adicional: ${ctx}` : ''}` }
           ]
         }]
       })
     });
 
-    clearInterval(loadingInterval);
+    clearInterval(interval);
     if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
     const data = await res.json();
     const raw = data.content.map(b => b.text||'').join('').replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(raw);
-    aiDetected = parsed.muros || [];
-    renderAICards(parsed);
+    aiResult = JSON.parse(raw);
+
+    murosYeso = aiResult.tabiques_carton_yeso || [];
+    murosSiporex = aiResult.muros_siporex || [];
+    puertas = aiResult.puertas || {p70:{cantidad:0},p80:{cantidad:0},p90:{cantidad:0}};
+    banoData = aiResult.bano || null;
+
+    renderAIResults();
     setAIState('done');
   } catch(err) {
-    clearInterval(loadingInterval);
+    clearInterval(interval);
     setAIState('error');
     cont.innerHTML = `<div class="error-box">⚠ ${err.message}</div>`;
   }
 }
 
-// ── AI CARDS ──
-function renderAICards(parsed) {
+// ══ RENDER AI RESULTS ══
+function renderAIResults() {
   const cont = document.getElementById('aiContent');
-  if (!parsed.muros || !parsed.muros.length) {
-    cont.innerHTML = `<div class="state-empty"><div class="state-empty-txt">No se detectaron muros. Intentá con una imagen más clara.</div></div>`; return;
+  let h = '';
+
+  // ROJOS - Cartón yeso
+  if (murosYeso.length) {
+    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-r"></div><span style="color:var(--red)">Tabiques cartón yeso (${murosYeso.length})</span></div>`;
+    h += `<div class="ai-cards">`;
+    murosYeso.forEach((m, i) => {
+      h += `<div class="ai-card sel-r" id="acy_${i}" onclick="toggleAC('y',${i})">
+        <div class="ai-card-top"><div class="ai-card-name ai-card-name-r">${m.nombre}</div>
+        <input type="checkbox" class="ai-card-chk" id="chky_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('acy_${i}').classList.toggle('sel-r',this.checked)"></div>
+        <div class="ai-cf"><label>LONG. (m)</label><input type="number" id="yl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>ALTURA (m)</label><input type="number" id="ya_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        ${m.nota?`<div class="ai-note-txt">↳ ${m.nota}</div>`:''}
+      </div>`;
+    });
+    h += `</div></div>`;
   }
-  let h = `<div class="ai-cards">`;
-  parsed.muros.forEach((m, i) => {
-    const nAb = m.aberturas ? m.aberturas.length : 0;
-    const abW = nAb > 0 ? m.aberturas[0].ancho_m : 0.90;
-    const abH = nAb > 0 ? m.aberturas[0].alto_m : 2.05;
-    h += `<div class="ai-card sel" id="aicard_${i}" onclick="toggleCard(${i})">
-      <div class="ai-card-top"><div class="ai-card-name">${m.nombre}</div>
-      <input type="checkbox" class="ai-card-chk" id="aichk_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('aicard_${i}').classList.toggle('sel',this.checked)"></div>
-      <div class="ai-card-field"><label>LONGITUD (m)</label><input type="number" id="ai_l_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
-      <div class="ai-card-field"><label>ALTURA (m)</label><input type="number" id="ai_a_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
-      <div class="ai-card-field"><label>N° ABERTURAS</label><input type="number" id="ai_n_${i}" value="${nAb}" min="0" onclick="event.stopPropagation()"></div>
-      ${nAb>0?`<div class="row2"><div class="ai-card-field"><label>ANCHO AB.</label><input type="number" id="ai_aw_${i}" value="${abW}" step="0.05" onclick="event.stopPropagation()"></div><div class="ai-card-field"><label>ALTO AB.</label><input type="number" id="ai_ah_${i}" value="${abH}" step="0.05" onclick="event.stopPropagation()"></div></div>`:''}
-      ${m.nota?`<div class="ai-note">↳ ${m.nota}</div>`:''}
+
+  // AZULES - Siporex
+  if (murosSiporex.length) {
+    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-b"></div><span style="color:var(--blue)">Muros Siporex (${murosSiporex.length})</span></div>`;
+    h += `<div class="ai-cards">`;
+    murosSiporex.forEach((m, i) => {
+      h += `<div class="ai-card sel-b" id="acs_${i}" onclick="toggleAC('s',${i})">
+        <div class="ai-card-top"><div class="ai-card-name ai-card-name-b">${m.nombre}</div>
+        <input type="checkbox" class="ai-card-chk" id="chks_${i}" checked onclick="event.stopPropagation();" onchange="document.getElementById('acs_${i}').classList.toggle('sel-b',this.checked)"></div>
+        <div class="ai-cf"><label>LONG. (m)</label><input type="number" id="sl_${i}" value="${m.longitud_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        <div class="ai-cf"><label>ALTURA (m)</label><input type="number" id="sa_${i}" value="${m.altura_m}" step="0.05" onclick="event.stopPropagation()"></div>
+        ${m.nota?`<div class="ai-note-txt">↳ ${m.nota}</div>`:''}
+      </div>`;
+    });
+    h += `</div></div>`;
+  }
+
+  // AMARILLOS - Puertas
+  const p = puertas;
+  const tot70 = p.p70?.cantidad||0, tot80 = p.p80?.cantidad||0, tot90 = p.p90?.cantidad||0;
+  if (tot70+tot80+tot90 > 0) {
+    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-y"></div><span style="color:var(--yellow)">Puertas detectadas</span></div>`;
+    h += `<div class="puertas-grid">
+      <div class="puerta-chip"><div class="puerta-qty" id="edit70">${tot70}</div><div class="puerta-lbl">70cm · interna</div></div>
+      <div class="puerta-chip"><div class="puerta-qty" id="edit80">${tot80}</div><div class="puerta-lbl">80cm · baño</div></div>
+      <div class="puerta-chip"><div class="puerta-qty" id="edit90">${tot90}</div><div class="puerta-lbl">90cm · ingreso</div></div>
     </div>`;
-  });
-  if (parsed.observaciones) h += `<div class="ai-obs"><strong style="color:var(--lime);font-size:9px;letter-spacing:0.1em;">OBSERVACIONES IA</strong><br>${parsed.observaciones}</div>`;
-  h += `</div><div class="import-row"><button class="btn-import" onclick="importarSeleccionados()">↓ Importar seleccionados</button><button class="btn-import-all" onclick="importarTodos()">↓ Importar todos</button></div>`;
+  }
+
+  // BAÑO
+  if (banoData && banoData.encontrado) {
+    h += `<div class="color-section"><div class="cs-header"><div class="cs-dot cs-dot-t"></div><span style="color:var(--teal)">Revestimiento baño</span></div>`;
+    h += `<div class="bano-card">
+      <div class="bano-title">🚿 Baño detectado</div>
+      <div class="bano-row"><span class="bano-lbl">Perímetro baño</span><span class="bano-val">${banoData.perimetro_m} m</span></div>
+      <div class="bano-row"><span class="bano-lbl">Revestimiento pared (×1.5m)</span><span class="bano-val">${banoData.area_revestimiento_bano_m2} m²</span></div>
+      ${banoData.ducha?.encontrada ? `
+      <div class="bano-row"><span class="bano-lbl">Ducha ${banoData.ducha.dim_1_m}×${banoData.ducha.dim_2_m}m</span><span class="bano-val">${banoData.ducha.perimetro_util_m} m útil</span></div>
+      <div class="bano-row"><span class="bano-lbl">Revestimiento ducha (×2.1m)</span><span class="bano-val">${banoData.ducha.area_revestimiento_ducha_m2} m²</span></div>` : ''}
+      <div class="bano-row"><span class="bano-lbl">Total azulejos 30×45cm (+10%)</span><span class="bano-val">${banoData.total_azulejos_30x45} u</span></div>
+      ${banoData.nota?`<div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;">↳ ${banoData.nota}</div>`:''}
+    </div>`;
+  }
+
+  if (aiResult?.observaciones) {
+    h += `<div style="background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:9px 11px;font-size:10px;color:var(--muted2);line-height:1.7;margin-top:8px;"><strong style="color:var(--muted);font-size:9px;letter-spacing:0.1em;">OBSERVACIONES IA</strong><br>${aiResult.observaciones}</div>`;
+  }
+
+  if (!h) { h = `<div class="state-empty"><p>No se detectaron elementos. Verificá los colores del plano.</p></div>`; }
+
+  h += `<div class="import-row">
+    <button class="btn-import" onclick="importarTodo()">↓ Importar todo</button>
+    <button class="btn-import-all" onclick="importarSeleccionados()">↓ Importar seleccionados</button>
+  </div>`;
+
   cont.innerHTML = h;
 }
 
-function toggleCard(i) { const chk=document.getElementById(`aichk_${i}`); chk.checked=!chk.checked; document.getElementById(`aicard_${i}`).classList.toggle('sel',chk.checked); }
-
-function importarSeleccionados() { aiDetected.forEach((_,i)=>{ const c=document.getElementById(`aichk_${i}`); if(c&&c.checked) importMuro(i); }); renderMuros(); }
-function importarTodos() { aiDetected.forEach((_,i)=>importMuro(i)); renderMuros(); }
-function importMuro(i) {
-  const m=aiDetected[i];
-  const long=parseFloat(document.getElementById(`ai_l_${i}`)?.value??m.longitud_m);
-  const alt=parseFloat(document.getElementById(`ai_a_${i}`)?.value??m.altura_m);
-  const nAb=parseInt(document.getElementById(`ai_n_${i}`)?.value??0);
-  const abW=parseFloat(document.getElementById(`ai_aw_${i}`)?.value??0.9);
-  const abH=parseFloat(document.getElementById(`ai_ah_${i}`)?.value??2.05);
-  if (!muros.find(x=>x.nombre===m.nombre&&x.long===long)) muros.push({nombre:m.nombre,long,altura:alt,nAberturas:nAb,abAncho:abW,abAltura:abH});
+function toggleAC(tipo, i) {
+  const pfx = tipo==='y'?'acy':'acs', cpfx = tipo==='y'?'chky':'chks';
+  const chk = document.getElementById(`${cpfx}_${i}`);
+  chk.checked = !chk.checked;
+  document.getElementById(`${pfx}_${i}`).classList.toggle(tipo==='y'?'sel-r':'sel-b', chk.checked);
 }
 
-// ── MUROS ──
-function renderMuros() {
-  const list=document.getElementById('muroList');
-  if (!muros.length) { list.innerHTML=`<p style="font-size:11px;color:var(--muted);">Sin muros. Analizá un plano o agregá manualmente.</p>`; return; }
-  list.innerHTML=muros.map((m,i)=>{
-    const neta=(m.long*m.altura-m.nAberturas*m.abAncho*m.abAltura).toFixed(2);
-    return `<div class="muro-card"><div><div class="muro-name">${m.nombre}</div><div class="muro-info">${m.long}m × ${m.altura}m · ${neta} m²${m.nAberturas>0?` · ${m.nAberturas} abertura(s)`:''}</div></div><button class="muro-del" onclick="deleteMuro(${i})">✕</button></div>`;
+// ══ IMPORT ══
+function importarTodo() {
+  murosYeso.forEach((_, i) => importYeso(i));
+  murosSiporex.forEach((_, i) => importSiporex(i));
+}
+
+function importarSeleccionados() {
+  murosYeso.forEach((_, i) => { if (document.getElementById(`chky_${i}`)?.checked) importYeso(i); });
+  murosSiporex.forEach((_, i) => { if (document.getElementById(`chks_${i}`)?.checked) importSiporex(i); });
+}
+
+function importYeso(i) {
+  const m = murosYeso[i];
+  const long = parseFloat(document.getElementById(`yl_${i}`)?.value ?? m.longitud_m);
+  const alt = parseFloat(document.getElementById(`ya_${i}`)?.value ?? m.altura_m);
+  if (!murosYeso._imported) murosYeso._imported = {};
+  murosYeso._imported[i] = { ...m, long, altura: alt };
+}
+
+function importSiporex(i) {
+  const m = murosSiporex[i];
+  const long = parseFloat(document.getElementById(`sl_${i}`)?.value ?? m.longitud_m);
+  const alt = parseFloat(document.getElementById(`sa_${i}`)?.value ?? m.altura_m);
+  if (!murosSiporex._imported) murosSiporex._imported = {};
+  murosSiporex._imported[i] = { ...m, long, altura: alt };
+}
+
+// ══ SUPERFICI ══
+function openSupModal() { document.getElementById('supOverlay').classList.add('open'); document.getElementById('supNombre').focus(); }
+function closeSupModal() { document.getElementById('supOverlay').classList.remove('open'); }
+document.getElementById('supOverlay').addEventListener('click', e => { if (e.target===document.getElementById('supOverlay')) closeSupModal(); });
+
+function addSup() {
+  const nombre = document.getElementById('supNombre').value.trim() || `Ambiente ${superfici.length+1}`;
+  const m2 = parseFloat(document.getElementById('supM2').value) || 0;
+  if (m2 <= 0) { alert('Ingresá una superficie válida.'); return; }
+  superfici.push({ nombre, m2, cat: catVal });
+  renderSupList(); closeSupModal();
+  document.getElementById('supNombre').value = ''; document.getElementById('supM2').value = '';
+}
+
+function renderSupList() {
+  const list = document.getElementById('supList');
+  if (!superfici.length) { list.innerHTML = `<p style="font-size:11px;color:var(--muted);">Sin superficies cargadas.</p>`; return; }
+  list.innerHTML = superfici.map((s, i) => {
+    const catClass = s.cat==='bagno'?'sup-cat-b':s.cat==='esterno'?'sup-cat-e':'sup-cat-i';
+    const catLbl = s.cat==='bagno'?'BAGNO':s.cat==='esterno'?'ESTERNO':'INTERNO';
+    return `<div class="sup-item">
+      <span>${s.nombre}</span>
+      <span class="sup-cat ${catClass}">${catLbl}</span>
+      <span style="color:var(--lime);font-size:12px;">${s.m2}m²</span>
+      <button class="sup-del" onclick="delSup(${i})">✕</button>
+    </div>`;
   }).join('');
 }
-function deleteMuro(i) { muros.splice(i,1); renderMuros(); }
 
-// ── MODAL ──
-function openModal() { document.getElementById('overlay').classList.add('open'); document.getElementById('mNom').focus(); }
-function closeModal() { document.getElementById('overlay').classList.remove('open'); }
-document.getElementById('overlay').addEventListener('click', e=>{ if(e.target===document.getElementById('overlay')) closeModal(); });
-function addMuroManual() {
-  const nombre=document.getElementById('mNom').value.trim()||`Muro ${muros.length+1}`;
-  const long=parseFloat(document.getElementById('mLong').value)||0;
-  const altura=parseFloat(document.getElementById('mAlt').value)||2.6;
-  const nAb=parseInt(document.getElementById('mAbN').value)||0;
-  const abW=parseFloat(document.getElementById('mAbW').value)||0.9;
-  const abH=parseFloat(document.getElementById('mAbH').value)||2.05;
-  if(long<=0){alert('Ingresá una longitud válida.');return;}
-  muros.push({nombre,long,altura,nAberturas:nAb,abAncho:abW,abAltura:abH});
-  renderMuros(); closeModal();
-  document.getElementById('mNom').value=''; document.getElementById('mLong').value=''; document.getElementById('mAbN').value='0';
-}
+function delSup(i) { superfici.splice(i,1); renderSupList(); }
 
-// ── CALCULAR ──
+// ══ CALCULAR ══
 function calcular() {
-  if (!muros.length){alert('Agregá al menos un muro.');return;}
-  const caras=sistemaVal==='doble'?2:1, sepM=parseFloat(document.getElementById('sepM').value);
-  const pAlt=parseFloat(document.getElementById('pAlto').value), pAn=1.2;
-  let totLong=0,totBruta=0,totNeta=0;
-  muros.forEach(m=>{totLong+=m.long;const b=m.long*m.altura;totBruta+=b;totNeta+=b-m.nAberturas*m.abAncho*m.abAltura;});
-  const avgAlt=totBruta/totLong;
-  let montC=0; muros.forEach(m=>{montC+=Math.ceil(m.long/sepM)+1+m.nAberturas*2;});
-  const piezasMC=Math.ceil(montC*avgAlt/3), piezasSol=Math.ceil(totLong*2/3);
-  const placas=Math.ceil(totNeta*caras*1.10/(pAn*pAlt));
-  const tornPF=Math.ceil(totNeta*caras*25), tornMS=montC*8;
-  const nFilas=Math.max(1,Math.ceil(avgAlt/pAlt)-1);
-  const cinta=Math.ceil((totLong/pAn*pAlt+totLong*nFilas)*caras*1.05);
-  const pasta=Math.ceil(cinta*0.15), lana=Math.ceil(totNeta*1.05);
+  const caras = sistemaVal==='doble'?2:1;
+  const sepM = parseFloat(document.getElementById('sepM').value);
+  const pAlt = parseFloat(document.getElementById('pAlto').value);
+  const pAn = 1.2;
 
-  resultados=[];
-  if(document.getElementById('chkMont').checked){resultados.push({cat:'Estructura',nombre:'Montante C',qty:piezasMC,unit:'piezas 3m',nota:`${montC} montantes · sep. ${sepM*100}cm`});resultados.push({cat:'Estructura',nombre:'Solera U',qty:piezasSol,unit:'piezas 3m',nota:`${(totLong*2).toFixed(1)} m lineales`});}
-  if(document.getElementById('chkPlac').checked){resultados.push({cat:'Placas',nombre:'Placa yeso 1.2×2.6m',qty:placas,unit:'placas',nota:`Área neta ${totNeta.toFixed(2)} m² · ${caras} cara(s) + 10%`});}
-  if(document.getElementById('chkTorn').checked){resultados.push({cat:'Fijaciones',nombre:'Tornillo placa-montante',qty:tornPF,unit:'u',nota:'25 u/m² de placa'});resultados.push({cat:'Fijaciones',nombre:'Tornillo montante-solera',qty:tornMS,unit:'u',nota:'4 u/montante/solera × 2'});}
-  if(document.getElementById('chkCint').checked){resultados.push({cat:'Terminación',nombre:'Cinta de juntas',qty:cinta,unit:'m',nota:'Juntas V+H + 5%'});resultados.push({cat:'Terminación',nombre:'Masilla / pasta',qty:pasta,unit:'kg',nota:'0.15 kg/m de junta'});}
-  if(document.getElementById('chkLana').checked){resultados.push({cat:'Aislación',nombre:'Lana de vidrio 50mm',qty:lana,unit:'m²',nota:'Área neta + 5%'});}
+  // Usar datos importados o todos los detectados
+  const yeso = murosYeso._imported ? Object.values(murosYeso._imported) : murosYeso.map(m => ({...m, long:m.longitud_m, altura:m.altura_m}));
+  const sip = murosSiporex._imported ? Object.values(murosSiporex._imported) : murosSiporex.map(m => ({...m, long:m.longitud_m, altura:m.altura_m}));
 
-  const proy=document.getElementById('proyNombre').value||'—';
-  let h=`<div class="chips">`;
-  [[totLong.toFixed(2),'ML totales','m'],[totBruta.toFixed(2),'Área bruta','m²'],[totNeta.toFixed(2),'Área neta','m²'],[muros.length,'Muros','unidades'],[caras===2?'Doble':'Simple','Sistema','cara']].forEach(([v,l,u])=>{h+=`<div class="chip"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;});
-  h+=`</div><p style="font-size:10px;color:var(--muted);margin-bottom:14px;">${proy.toUpperCase()}</p>`;
-  h+=`<table class="res-table"><thead><tr><th>Material</th><th>Cantidad</th><th>Unidad</th><th>Nota</th></tr></thead><tbody>`;
-  [...new Set(resultados.map(r=>r.cat))].forEach(cat=>{
-    h+=`<tr class="cat-row"><td colspan="4">${cat}</td></tr>`;
-    resultados.filter(r=>r.cat===cat).forEach(r=>{h+=`<tr><td class="td-name">${r.nombre}</td><td class="td-qty">${r.qty.toLocaleString('es-AR')}</td><td class="td-unit">${r.unit}</td><td class="td-note">${r.nota}</td></tr>`;});
-  });
-  h+=`</tbody></table><table class="res-table"><thead><tr><th>Muro</th><th>Long.</th><th>Altura</th><th>Bruta</th><th>Aberturas</th><th>Neta</th></tr></thead><tbody>`;
-  muros.forEach(m=>{const b=(m.long*m.altura).toFixed(2),a=(m.nAberturas*m.abAncho*m.abAltura).toFixed(2),n=(m.long*m.altura-m.nAberturas*m.abAncho*m.abAltura).toFixed(2);h+=`<tr><td class="td-name">${m.nombre}</td><td>${m.long}m</td><td>${m.altura}m</td><td>${b} m²</td><td style="color:var(--muted)">${m.nAberturas>0?`${m.nAberturas} (−${a} m²)`:'—'}</td><td class="td-qty" style="font-size:13px;">${n} m²</td></tr>`;});
-  h+=`</tbody></table>`;
-  document.getElementById('resultsArea').innerHTML=h;
+  // ─ CARTÓN YESO ─
+  let totLongY=0, totBrutaY=0, totNetaY=0;
+  yeso.forEach(m => { totLongY+=m.long; const b=m.long*m.altura; totBrutaY+=b; totNetaY+=b; });
+  const avgAltY = yeso.length ? totBrutaY/totLongY : 2.6;
+  let montC=0; yeso.forEach(m => { montC+=Math.ceil(m.long/sepM)+1; });
+  const piezasMC=Math.ceil(montC*avgAltY/3), piezasSol=Math.ceil(totLongY*2/3);
+  const placas=Math.ceil(totNetaY*caras*1.10/(pAn*pAlt));
+  const tornPF=Math.ceil(totNetaY*caras*25), tornMS=montC*8;
+  const cinta=Math.ceil((totLongY/pAn*pAlt+totLongY*Math.max(1,Math.ceil(avgAltY/pAlt)-1))*caras*1.05);
+  const pasta=Math.ceil(cinta*0.15), lana=Math.ceil(totNetaY*1.05);
+
+  resultadosYeso = [];
+  if (yeso.length) {
+    resultadosYeso.push({cat:'Estructura',nombre:'Montante C',qty:piezasMC,unit:'piezas 3m',nota:`${montC} montantes · sep. ${sepM*100}cm`});
+    resultadosYeso.push({cat:'Estructura',nombre:'Solera U',qty:piezasSol,unit:'piezas 3m',nota:`${(totLongY*2).toFixed(1)} m lin.`});
+    resultadosYeso.push({cat:'Placas',nombre:'Placa yeso 1.2×2.6m',qty:placas,unit:'placas',nota:`${totNetaY.toFixed(2)} m² neto · ${caras} cara(s) +10%`});
+    resultadosYeso.push({cat:'Fijaciones',nombre:'Tornillo placa-montante',qty:tornPF,unit:'u',nota:'25u/m²'});
+    resultadosYeso.push({cat:'Fijaciones',nombre:'Tornillo montante-solera',qty:tornMS,unit:'u',nota:'4u/montante × 2 soleras'});
+    resultadosYeso.push({cat:'Terminación',nombre:'Cinta de juntas',qty:cinta,unit:'m',nota:'Juntas V+H +5%'});
+    resultadosYeso.push({cat:'Terminación',nombre:'Masilla',qty:pasta,unit:'kg',nota:'0.15kg/m'});
+    resultadosYeso.push({cat:'Aislación',nombre:'Lana de vidrio 50mm',qty:lana,unit:'m²',nota:'Área neta +5%'});
+  }
+
+  // ─ SIPOREX ─
+  let totLongS=0, totBrutaS=0;
+  sip.forEach(m => { totLongS+=m.long; totBrutaS+=m.long*m.altura; });
+  resultadosSiporex = [];
+  if (sip.length) {
+    const bloques = Math.ceil(totBrutaS / (0.60 * 0.20) * 1.05);
+    const mortero = Math.ceil(totBrutaS * 8);
+    resultadosSiporex.push({cat:'Mampostería',nombre:'Bloque Siporex 60×20cm',qty:bloques,unit:'u',nota:`${totBrutaS.toFixed(2)} m² total +5%`});
+    resultadosSiporex.push({cat:'Mampostería',nombre:'Mortero adhesivo',qty:mortero,unit:'kg',nota:'~8kg/m²'});
+    resultadosSiporex.push({cat:'Terminación',nombre:'Revoque fino',qty:Math.ceil(totBrutaS*2*1.1),unit:'m²',nota:'Ambas caras +10%'});
+  }
+
+  renderResultYeso(totLongY, totBrutaY, totNetaY, caras);
+  renderResultSiporex(totLongS, totBrutaS);
+  renderResultPuertas();
+  renderResultBano();
+  renderResultSup();
 }
 
-// ── EXPORT ──
+function renderResultYeso(totLong, totBruta, totNeta, caras) {
+  if (!resultadosYeso.length) { document.getElementById('tabYeso').innerHTML=`<div class="empty-res"><div>No hay tabiques de cartón yeso.</div></div>`; return; }
+  let h = `<div class="chips">`;
+  [[totLong.toFixed(2),'ML','m','chip-lime'],[totBruta.toFixed(2),'Área bruta','m²','chip-lime'],[totNeta.toFixed(2),'Área neta','m²','chip-lime'],[murosYeso.length,'Muros','u','chip-red'],[caras===2?'Doble':'Simple','Sistema','cara','chip-lime']].forEach(([v,l,u,c])=>{
+    h+=`<div class="chip ${c}"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;
+  });
+  h += `</div>` + buildTable(resultadosYeso);
+  document.getElementById('tabYeso').innerHTML = h;
+}
+
+function renderResultSiporex(totLong, totBruta) {
+  if (!resultadosSiporex.length) { document.getElementById('tabSiporex').innerHTML=`<div class="empty-res"><div>No hay muros Siporex.</div></div>`; return; }
+  let h = `<div class="chips">`;
+  [[totLong.toFixed(2),'ML','m','chip-blue'],[totBruta.toFixed(2),'Área','m²','chip-blue'],[murosSiporex.length,'Muros','u','chip-blue']].forEach(([v,l,u,c])=>{
+    h+=`<div class="chip ${c}"><div class="chip-lbl">${l}</div><div class="chip-val">${v}</div><div class="chip-unit">${u}</div></div>`;
+  });
+  h += `</div>` + buildTable(resultadosSiporex);
+  document.getElementById('tabSiporex').innerHTML = h;
+}
+
+function renderResultPuertas() {
+  const p70=puertas.p70?.cantidad||0, p80=puertas.p80?.cantidad||0, p90=puertas.p90?.cantidad||0;
+  if (!p70&&!p80&&!p90) { document.getElementById('tabPuertas').innerHTML=`<div class="empty-res"><div>No hay puertas detectadas.</div></div>`; return; }
+  let h = `<div class="puertas-grid" style="margin-bottom:18px;">
+    <div class="puerta-chip"><div class="puerta-qty">${p70}</div><div class="puerta-lbl">70×205cm<br>Interna estándar</div></div>
+    <div class="puerta-chip"><div class="puerta-qty">${p80}</div><div class="puerta-lbl">80×205cm<br>Baño</div></div>
+    <div class="puerta-chip"><div class="puerta-qty">${p90}</div><div class="puerta-lbl">90×205cm<br>Ingreso blindada</div></div>
+  </div>`;
+  const rows = [];
+  if (p70) rows.push({cat:'Puertas',nombre:'Puerta interna 70×205cm',qty:p70,unit:'u',nota:'Marco + hoja incluidos'});
+  if (p80) rows.push({cat:'Puertas',nombre:'Puerta baño 80×205cm',qty:p80,unit:'u',nota:'Marco + hoja incluidos'});
+  if (p90) rows.push({cat:'Puertas',nombre:'Puerta ingreso blindada 90×205cm',qty:p90,unit:'u',nota:'Con cerradura de seguridad'});
+  h += buildTable(rows);
+  document.getElementById('tabPuertas').innerHTML = h;
+}
+
+function renderResultBano() {
+  if (!banoData || !banoData.encontrado) { document.getElementById('tabBano').innerHTML=`<div class="empty-res"><div>No se detectó baño en el plano.</div></div>`; return; }
+  const b = banoData, d = b.ducha;
+  let h = `<div class="bano-card" style="margin-bottom:16px;">
+    <div class="bano-title">🚿 Revestimiento</div>
+    <div class="bano-row"><span class="bano-lbl">Perímetro baño</span><span class="bano-val">${b.perimetro_m} m</span></div>
+    <div class="bano-row"><span class="bano-lbl">Área revestimiento baño (×1.5m)</span><span class="bano-val">${b.area_revestimiento_bano_m2} m²</span></div>
+    ${d?.encontrada?`
+    <div class="bano-row"><span class="bano-lbl">Ducha ${d.dim_1_m}×${d.dim_2_m}m · per. útil</span><span class="bano-val">${d.perimetro_util_m} m</span></div>
+    <div class="bano-row"><span class="bano-lbl">Área revestimiento ducha (×2.1m)</span><span class="bano-val">${d.area_revestimiento_ducha_m2} m²</span></div>`:''}
+    <div class="bano-row"><span class="bano-lbl" style="color:var(--teal);font-weight:500;">Total azulejos 30×45cm (+10%)</span><span class="bano-val" style="font-size:18px;">${b.total_azulejos_30x45} u</span></div>
+  </div>`;
+  const rows = [
+    {cat:'Revestimiento',nombre:'Azulejo 30×45cm',qty:b.total_azulejos_30x45,unit:'u',nota:'Baño + ducha · +10% merma'},
+    {cat:'Revestimiento',nombre:'Adhesivo cerámico',qty:Math.ceil((b.area_revestimiento_bano_m2+(d?.area_revestimiento_ducha_m2||0))*5),unit:'kg',nota:'~5kg/m²'},
+    {cat:'Revestimiento',nombre:'Junta / fragüe',qty:Math.ceil((b.area_revestimiento_bano_m2+(d?.area_revestimiento_ducha_m2||0))*0.5),unit:'kg',nota:'~0.5kg/m²'},
+  ];
+  h += buildTable(rows);
+  document.getElementById('tabBano').innerHTML = h;
+}
+
+function renderResultSup() {
+  if (!superfici.length) { document.getElementById('tabSup').innerHTML=`<div class="empty-res"><div>Agregá superficies en el panel izquierdo.</div></div>`; return; }
+  const interno = superfici.filter(s=>s.cat==='interno');
+  const bagno = superfici.filter(s=>s.cat==='bagno');
+  const esterno = superfici.filter(s=>s.cat==='esterno');
+  const sumI = interno.reduce((a,s)=>a+s.m2,0);
+  const sumB = bagno.reduce((a,s)=>a+s.m2,0);
+  const sumE = esterno.reduce((a,s)=>a+s.m2,0);
+  const tot = sumI+sumB+sumE;
+
+  let h = `<div class="sup-summary">
+    <div class="sup-block sup-block-i"><div class="sup-block-lbl">Interno</div><div class="sup-block-val">${sumI.toFixed(2)}</div><div class="sup-block-unit">m²</div>
+      <div class="sup-block-list">${interno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
+    <div class="sup-block sup-block-b"><div class="sup-block-lbl">Bagno</div><div class="sup-block-val">${sumB.toFixed(2)}</div><div class="sup-block-unit">m²</div>
+      <div class="sup-block-list">${bagno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
+    <div class="sup-block sup-block-e"><div class="sup-block-lbl">Esterno</div><div class="sup-block-val">${sumE.toFixed(2)}</div><div class="sup-block-unit">m²</div>
+      <div class="sup-block-list">${esterno.map(s=>`<div class="sup-block-item"><span>${s.nombre}</span><span>${s.m2}m²</span></div>`).join('')}</div></div>
+  </div>
+  <div class="chips">
+    <div class="chip chip-lime"><div class="chip-lbl">Total</div><div class="chip-val">${tot.toFixed(2)}</div><div class="chip-unit">m²</div></div>
+    <div class="chip chip-lime"><div class="chip-lbl">Ambientes</div><div class="chip-val">${superfici.length}</div><div class="chip-unit">u</div></div>
+  </div>`;
+  document.getElementById('tabSup').innerHTML = h;
+}
+
+function buildTable(rows) {
+  if (!rows.length) return '';
+  let h = `<table class="res-table"><thead><tr><th>Material</th><th>Cantidad</th><th>Unidad</th><th>Nota</th></tr></thead><tbody>`;
+  const cats = [...new Set(rows.map(r=>r.cat))];
+  cats.forEach(cat => {
+    h += `<tr class="cat-row"><td colspan="4">${cat}</td></tr>`;
+    rows.filter(r=>r.cat===cat).forEach(r=>{
+      h += `<tr><td class="td-name">${r.nombre}</td><td class="td-qty">${r.qty.toLocaleString('es-AR')}</td><td class="td-unit">${r.unit}</td><td class="td-note">${r.nota}</td></tr>`;
+    });
+  });
+  return h + `</tbody></table>`;
+}
+
+// ══ EXPORT CSV ══
 function exportCSV() {
-  if(!resultados.length){alert('Calculá primero.');return;}
-  const proy=document.getElementById('proyNombre').value||'computo';
-  let csv='Categoría,Material,Cantidad,Unidad,Nota\n';
-  resultados.forEach(r=>{csv+=`"${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`;});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=`${proy.replace(/\s+/g,'_')}_computo.csv`; a.click();
+  const proy = document.getElementById('proyNombre').value || 'computo';
+  let csv = 'Sección,Categoría,Material,Cantidad,Unidad,Nota\n';
+  resultadosYeso.forEach(r => { csv+=`"Cartón yeso","${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`; });
+  resultadosSiporex.forEach(r => { csv+=`"Siporex","${r.cat}","${r.nombre}",${r.qty},"${r.unit}","${r.nota}"\n`; });
+  if (banoData?.encontrado) {
+    csv+=`"Baño","Revestimiento","Azulejo 30×45cm",${banoData.total_azulejos_30x45},"u","Total +10%"\n`;
+  }
+  const p70=puertas.p70?.cantidad||0, p80=puertas.p80?.cantidad||0, p90=puertas.p90?.cantidad||0;
+  if (p70) csv+=`"Puertas","Puertas","Puerta 70×205cm",${p70},"u","Interna"\n`;
+  if (p80) csv+=`"Puertas","Puertas","Puerta 80×205cm",${p80},"u","Baño"\n`;
+  if (p90) csv+=`"Puertas","Puertas","Puerta 90×205cm",${p90},"u","Ingreso blindada"\n`;
+  superfici.forEach(s => { csv+=`"Superfici","${s.cat}","${s.nombre}",${s.m2},"m²",""\n`; });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = `${proy.replace(/\s+/g,'_')}_computo_integral.csv`;
+  a.click();
 }
 </script>
 </body>
