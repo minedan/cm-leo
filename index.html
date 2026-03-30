@@ -412,7 +412,7 @@ async function analizarPlano(){
         max_tokens:2000,
         messages:[{role:'user',content:[
           {type:'image',source:{type:'base64',media_type:imgMediaType,data:imgBase64}},
-          {type:'text',text:`Analizza questa planimetria AutoCAD seguendo il codice colori indicato. Sii esaustivo con tutti gli elementi.${ctx?`\n\nContesto: ${ctx}`:'`}`}
+          {type:'text',text:'Analizza questa planimetria AutoCAD seguendo il codice colori indicato. Sii esaustivo con tutti gli elementi.' + (ctx ? '\n\nContesto: ' + ctx : '')}
         ]}]
       })
     });
