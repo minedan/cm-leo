@@ -31,9 +31,9 @@ input[type="number"]{-moz-appearance:textfield;}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;}
 textarea{resize:none;font-size:11px;line-height:1.6;color:var(--muted2);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.upload-zone{border:1px dashed var(--b2);border-radius:5px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;background:var(--s1);}
+.upload-zone{border:1px dashed var(--b2);border-radius:5px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;background:var(--s1);overflow:hidden;}
 .upload-zone:hover{border-color:var(--lime);background:var(--lime-g);}
-.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.upload-zone input[type="file"]{all:unset;position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;}
 .upload-text{font-size:11px;color:var(--muted2);line-height:1.7;}
 .upload-text strong{color:var(--lime);}
 .preview-img{width:100%;border-radius:4px;border:1px solid var(--b1);display:block;max-height:150px;object-fit:cover;}
